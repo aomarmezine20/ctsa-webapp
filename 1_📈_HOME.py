@@ -8,7 +8,7 @@ st. title('Welcome')
 
 
 
-image = Image.open('images/big_logo.png')
+image = Image.open('src/images/big_logo.png')
 
 
 col1, col2, col3 = st.columns(3)
