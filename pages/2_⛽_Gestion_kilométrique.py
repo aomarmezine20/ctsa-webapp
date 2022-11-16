@@ -35,6 +35,11 @@ if uploaded_file2:
     st.subheader('Le Kilométrage pour le deuxieme mois')
     #read file python
     df2 = pd.read_excel(uploaded_file2)
+    df1 = pd.read_excel(uploaded_file1)
+    df1=df1.dropna(how='any',axis=0,subset=['Dernier relevé: Valeur mesurée']) 
+
+    #make column of values km type int
+    df1['Dernier relevé: Valeur mesurée'] = df1['Dernier relevé: Valeur mesurée'].astype('int')
 
     #drop row that have null values
     df2=df2.dropna(how='any',axis=0,subset=['Dernier relevé: Valeur mesurée'])
@@ -183,3 +188,8 @@ if uploaded_file2:
 
     #----min value of KM 
     st.write('Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM')
+
+
+
+
+    #---------print pdf--------------------------------------------------------------------------
