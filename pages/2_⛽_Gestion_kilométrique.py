@@ -2,6 +2,8 @@ import streamlit as st # pip install streamlit
 import pandas as pd # pip install pandas
 import plotly.express as px # pip install plotly-express
 from PIL import Image
+from base64 import b64encode
+from fpdf import FPDF
 
 st.set_page_config(page_title= 'Gestion kilométrique', page_icon="⛽")
 st. title('Gestion kilométrique')
@@ -57,15 +59,15 @@ if uploaded_file2:
     #catrgory box
     st.header('Le Kilométrage pour PARC T1')
         #merge the two file into one file and make the calculation of km in months
-    dfF = df1[['Code du point de mesure','Dernier relevé: Valeur mesurée']].merge(df2[['Code du point de mesure','Dernier relevé: Valeur mesurée']], 
+    dfF1 = df1[['Code du point de mesure','Dernier relevé: Valeur mesurée']].merge(df2[['Code du point de mesure','Dernier relevé: Valeur mesurée']], 
                                     on = 'Code du point de mesure', 
                                     how = 'right')
                                     
-    dfF['KM'] = dfF["Dernier relevé: Valeur mesurée_y"] - dfF["Dernier relevé: Valeur mesurée_x"]
+    dfF1['KM'] = dfF1["Dernier relevé: Valeur mesurée_y"] - dfF1["Dernier relevé: Valeur mesurée_x"]
     #drop result of T2
-    dfF = dfF.drop(labels=range(74, 124))
+    dfF1 = dfF1.drop(labels=range(74, 124))
     
-    dfsort =dfF.sort_values(['KM'],ascending=[True])
+    dfsort =dfF1.sort_values(['KM'],ascending=[True])
     # ----PLOT DATAFRAME T1 -------
     fig= px.bar(
     dfsort,
@@ -77,22 +79,23 @@ if uploaded_file2:
     title =f'<b> Le graphe des KM global parcouru parc T1</b>'
     )
     st.plotly_chart(fig)
+    fig.write_image("images/fig_T1.jpeg")
 
     st.subheader('Synthèse des tendances de production par US sur le mois :')
     #--- max value of KM
-    st.write('Maximum de production : ''   '+ str(dfF['KM'].max()) +'   KM' )
+    st.write('Maximum de production : ''   '+ str(dfF1['KM'].max()) +'   KM' )
 
     #---- moyenne of value of KM
-    dfmin = dfF[dfF['KM'] != 0]
-    st.write('Moyenne de production : ''   '+ str(int(dfmin['KM'].sum() / dfmin['KM'].count())) +'   KM  ' +'  (hors US qui n’ont pas roulé)' )
+    dfmin1 = dfF1[dfF1['KM'] != 0]
+    st.write('Moyenne de production : ''   '+ str(int(dfmin1['KM'].sum() / dfmin1['KM'].count())) +'   KM  ' +'  (hors US qui n’ont pas roulé)' )
 
     #----min value of KM 
-    st.write('Minimum de production : ''   '+ str(dfmin['KM'].min()) +'   KM')
+    st.write('Minimum de production : ''   '+ str(dfmin1['KM'].min()) +'   KM')
 
 
     # ---T1--CUMMULE -------------------------------------------
-    dfF['KM cumul']= dfF['Dernier relevé: Valeur mesurée_y']
-    dfsort_cumul =dfF.sort_values(['KM cumul'],ascending=[True])
+    dfF1['KM cumul']= dfF1['Dernier relevé: Valeur mesurée_y']
+    dfsort_cumul =dfF1.sort_values(['KM cumul'],ascending=[True])
 
     # ----PLOT DATAFRAME T1 cumul -------
     fig= px.bar(
@@ -105,18 +108,19 @@ if uploaded_file2:
     title =f'<b> Le graphe des KM global parcouru parc T1 cumul</b>'
     )
     st.plotly_chart(fig)
+    fig.write_image("images/fig_T1cumul.jpeg")
 
     #----- cumul synthes ---------
     st.subheader('Synthèse des tendances de production par US sur le mois :')
     #--- max value of KM
-    st.write('Maximum de production : ''   '+ str(dfF['KM cumul'].max()) +'   KM' )
+    st.write('Maximum de production : ''   '+ str(dfF1['KM cumul'].max()) +'   KM' )
 
     #---- moyenne of value of KM
     
-    st.write('Moyenne de production : ''   '+ str(int(dfF['KM cumul'].sum() / dfF['KM cumul'].count())) +'   KM  ' +'  (hors US qui n’ont pas roulé)' )
+    st.write('Moyenne de production : ''   '+ str(int(dfF1['KM cumul'].sum() / dfF1['KM cumul'].count())) +'   KM  ' +"  (hors US qui n'ont pas roulé)" )
 
     #----min value of KM 
-    st.write('Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM')
+    st.write('Minimum de production : ''   '+ str(dfF1['KM cumul'].min()) +'   KM')
 
 
     #------------------   T2   -----------------------------------------------------------------------
@@ -146,6 +150,7 @@ if uploaded_file2:
     title =f'<b> Le graphe des KM global parcouru parc T2</b>'
     )
     st.plotly_chart(fig)
+    fig.write_image("images/fig_T2.jpeg")
 
     st.subheader('Synthèse des tendances de production par US sur le mois :')
     #--- max value of KM
@@ -173,9 +178,10 @@ if uploaded_file2:
     color='KM cumul',
     color_continuous_scale=[' red' , 'yellow' , ' green' ],
     template='plotly_white',
-    title =f'<b> Le graphe des KM global parcouru parc T1 cumul</b>'
+    title =f'<b> Le graphe des KM global parcouru parc T2 cumul</b>'
     )
     st.plotly_chart(fig)
+    fig.write_image("images/fig_T2cumul.jpeg")
 
     #----- cumul synthes ---------
     st.subheader('Synthèse des tendances de production par US sur le mois :')
@@ -193,3 +199,155 @@ if uploaded_file2:
 
 
     #---------print pdf--------------------------------------------------------------------------
+    @st.cache
+    def gen_pdf():
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Helvetica", size=24)
+        pdf.image('images/big_logo.png', 10, 8, 33)
+        # Arial bold 15
+        pdf.set_font('Arial', 'B', 15)
+        # Move to the right
+        pdf.cell(70)
+        # Title
+        pdf.cell(60, 10, 'Gestion kilométrique', 1, 0, 'C')
+        # Line break
+        pdf.ln(30)
+        pdf.set_font('Arial', 'B', 25)
+        
+        pdf.cell(60, 20, 'Le Kilométrage pour PARC T1', 'C')
+        # Line break
+        pdf.ln(15)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.cell(60, 20, 'Le Kilométrage pour PARC T1', 'C')
+        #-------------T1 -------------------------------------------------
+        # Line break
+        pdf.ln(15)
+        pdf.cell(0)
+        pdf.image('images/fig_T1.jpeg', x=5, y=69, w=200,h=150)
+        # Line break
+        pdf.ln(150)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.cell(60, 20, 'Synthèse des tendances de production par US sur le mois :', 'C')
+
+        pdf.ln(15)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Maximum de production : ''   '+ str(dfF1['KM'].max()) +'   KM', 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Moyenne de production : ''   '+ str(int(dfmin1['KM'].sum() / dfmin1['KM'].count())) +'   KM  ' +"  (hors US qui n'ont pas roulé)", 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfmin1['KM'].min()) +'   KM', 'C')
+        #------------T1 cumul -------------------------------------------
+        pdf.ln(70)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.image('images/fig_T1cumul.jpeg', x=5, y=30, w=200,h=150)
+        pdf.image('images/big_logo.png', 10, 8, 33)
+        
+
+        pdf.ln(170)
+        pdf.cell(10)
+        pdf.cell(60, 20, 'Synthèse des tendances de production par US sur le mois :', 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Maximum de production : ''   '+ str(dfF1['KM cumul'].max()) +'   KM', 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Moyenne de production : ''   '+ str(int(dfF1['KM cumul'].sum() / dfF1['KM cumul'].count())) +'   KM  ' +"  (hors US qui n'ont pas roulé)", 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfF1['KM cumul'].min()) +'   KM', 'C')
+        
+        pdf.ln(100)
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(100)
+        pdf.cell(70, 65, 'Le Kilométrage pour PARC T2', 'C')
+        pdf.image('images/big_logo.png', 10, 8, 33)
+        #----------------T2-----------------------------------------------------------
+        pdf.ln(40)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.image('images/fig_T2.jpeg', x=5, y=49, w=200,h=150)
+
+        pdf.ln(150)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.cell(60, 20, 'Synthèse des tendances de production par US sur le mois :', 'C')
+
+        pdf.ln(15)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Maximum de production : ''   '+ str(dfF['KM'].max()) +'   KM', 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Moyenne de production : ''   '+ str(int(dfmin['KM'].sum() / dfmin['KM'].count())) +'   KM  ' +"  (hors US qui n'ont pas roulé)", 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfmin['KM'].min()) +'   KM', 'C')
+
+        #------------T2 cumul ----------------------------------------------------
+
+        pdf.ln(70)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.image('images/fig_T2cumul.jpeg', x=5, y=30, w=200,h=150)
+        pdf.image('images/big_logo.png', 10, 8, 33)
+        
+
+        pdf.ln(170)
+        pdf.cell(10)
+        pdf.cell(60, 20, 'Synthèse des tendances de production par US sur le mois :', 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Maximum de production : ''   '+ str(dfF['KM cumul'].max()) +'   KM', 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Moyenne de production : ''   '+ str(int(dfF['KM cumul'].sum() / dfF['KM cumul'].count())) +'   KM  ' +"  (hors US qui n'ont pas roulé)", 'C')
+
+        pdf.ln(10)
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM', 'C')
+
+        
+        return bytes(pdf.output())
+
+        # Line break
+        
+    # Embed PDF to display it:
+    #base64_pdf = b64encode(gen_pdf()).decode("utf-8")
+    #pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    #st.markdown(pdf_display, unsafe_allow_html=True)
+
+    # Add a download button:
+
+    st.subheader("Télecharger PDF")
+    st.download_button(
+        label="Télecharger Resultat PDF",
+        data=gen_pdf(),
+        file_name="Gestion kilométrique Ctsa.pdf",
+        mime="application/pdf",
+    )
