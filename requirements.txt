@@ -6,3 +6,4 @@ xlrd==2.0.1
 openpyxl==3.0.10
 PyPDF2==2.11.1
 fpdf==1.7.2
+kaleido==0.2.1
