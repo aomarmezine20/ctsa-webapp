@@ -206,11 +206,11 @@ if uploaded_file2:
         pdf.set_font("Helvetica", size=24)
         pdf.image('images/big_logo.png', 10, 8, 33)
         # Arial bold 15
-        pdf.set_font('Arial', 'B', 15)
+        pdf.set_font('Arial', 'B', 20)
         # Move to the right
         pdf.cell(70)
         # Title
-        pdf.cell(60, 10, 'Gestion kilométrique', 1, 0, 'C')
+        pdf.cell(75, 15, 'Gestion kilométrique', 1, 0, 'C')
         # Line break
         pdf.ln(30)
         pdf.set_font('Arial', 'B', 25)
@@ -331,16 +331,16 @@ if uploaded_file2:
         pdf.cell(20)
         pdf.set_font('Times', '', 15)
         pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM', 'C')
-
         
-        return bytes(pdf.output())
+        
+        return pdf.output(dest='S').encode('latin-1')
 
         # Line break
         
     # Embed PDF to display it:
-    #base64_pdf = b64encode(gen_pdf()).decode("utf-8")
-    #pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
-    #st.markdown(pdf_display, unsafe_allow_html=True)
+    base64_pdf = b64encode(gen_pdf()).decode("utf-8")
+    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    
 
     # Add a download button:
 

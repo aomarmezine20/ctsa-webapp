@@ -2,7 +2,8 @@ import streamlit as st # pip install streamlit
 import pandas as pd # pip install pandas
 import plotly.express as px # pip install plotly-express
 from PIL import Image
-
+from base64 import b64encode
+from fpdf import FPDF
 
 st.set_page_config(page_title= 'demandes d’interventions (DI)', page_icon="👷‍♂️")
 st. title('suivi des demandes d’interventions (DI)')
@@ -93,3 +94,28 @@ if uploaded_file1 :
     dfcount_emp.to_frame()
 
     st.dataframe(dfcount_emp.head(5))
+
+
+
+    #show pdf 
+
+    
+    @st.cache
+    def gen_pdf():
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size = 15)
+        return bytes(pdf.output(dest='S'),encoding="utf-8")
+
+    # Embed PDF to display it:
+    base64_pdf = b64encode(gen_pdf()).decode("utf-8")
+    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
+    # Add a download button:
+    st.download_button(
+        label="Download PDF",
+        data=gen_pdf(),
+        file_name="file_name.pdf",
+        mime="application/pdf",
+    )
