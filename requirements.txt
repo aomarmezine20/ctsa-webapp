@@ -6,3 +6,4 @@ xlrd==2.0.1
 openpyxl==3.0.10
 fpdf==1.7.2
 kaleido==0.2.1
+dataframe_image==0.1.3
