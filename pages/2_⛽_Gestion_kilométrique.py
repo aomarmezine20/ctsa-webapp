@@ -78,7 +78,7 @@ if uploaded_file2:
     template='plotly_white',
     title =f'<b> Le graphe des KM global parcouru parc T1</b>'
     )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig)    
     fig.write_image("images/fig_T1.jpeg")
 
     st.subheader('Synthèse des tendances de production par US sur le mois :')

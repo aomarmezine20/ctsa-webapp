@@ -12,7 +12,7 @@ st.set_page_config(page_title= 'demandes d’interventions (DI)', page_icon="�
 st. title('suivi des demandes d’interventions (DI)')
 
 uploaded_file1 =st.file_uploader('fichier demandes d’interventions', type=['xlsx','xls','csv'])
-driver = webdriver.Chrome(ChromeDriverManager().install())
+
 
 
 if uploaded_file1 :
@@ -79,43 +79,65 @@ if uploaded_file1 :
     #show top 5 of every pacr us PARC T1---------------------------------------------------
     st.subheader("5 US/T1")
     st.markdown('**Top 5 des US sur lesquelles on a plus de de DI PARC T1**')
-    st.write(dfcount_t1.head(n=5))
     #convert serie to datafram
     table1=pd.DataFrame(dfcount_t1.head(5))
-   #convert table of top 5 us t1 to image
-    dfi.export(table1, "images/table_t1.png")
+   #convert table of top 5 us t1 to table
+    fig = px.bar(table1, labels={'index':'DI','value':'N° US'},text_auto='')
     
+    #convert table of top 5 us t1 to table image
+    fig.write_image("images/table_t1.png")
+    #plot chart 
+    st.plotly_chart(fig)
     
     #show top 5 of every pacr us PARC T2----------------------------------------------------------
     st.subheader("5 US/T2")
     st.markdown('**Top 5 des US sur lesquelles on a plus de de DI PARC T2**')
-    st.write(dfcount_t2.head(n=5))
+    
     #convert serie to datafram
     table2=pd.DataFrame(dfcount_t2.head(5))
    #convert table of top 5 us T2 to image
-    dfi.export(table2, "images/table_t2.png")
+   #convert table of top 5 us t1 to table
+    fig = px.bar(table2, labels={'index':'DI','value':'N° US'},text_auto='')
+    
+    #convert table of top 5 us t1 to table image
+    fig.write_image("images/table_t2.png")
+    #plot chart 
+    st.plotly_chart(fig)
+    
 
     #show top 5 défaillance sujet DI----------------------------------------------------------------
     st.header('Top 5 des défaillance sujet de (DI)')
     dfcount_mtr =df['Matériel du signalement Description'].value_counts()
-    st.dataframe(dfcount_mtr.head(5))
+    
 
     #convert serie to datafram
     table3=pd.DataFrame(dfcount_mtr.head(5))
    #convert table of matriel deffi to image
-    dfi.export(table3, "images/table_mtr.png")
+   #convert table of top 5 us t1 to table
+    
+    fig = px.bar(table3, labels={'index':'Matériel du signalement Description','value':'Nbr DI'}, text_auto='')
+    #convert table of top 5 us t1 to table image
+    fig.write_image("images/table_mtr.png")
+    #plot chart 
+    st.plotly_chart(fig)
+    
 
     #Top 5 emplacements des défaillances----------------------------------------------------------
     st.header('Top 5 emplacements des défaillances')
-    dfcount_emp =df[['Point principal associé','Point principal associé Description']].value_counts()
+    dfcount_emp =df['Point principal associé Description'].value_counts()
 
     dfcount_emp.to_frame()
 
-    st.dataframe(dfcount_emp.head(5))
+    
     #convert serie to datafram
     table4=pd.DataFrame(dfcount_emp.head(5))
+    
+    fig = px.bar(table4, labels={'index':'Point principal associé Description','value':'Nbr DI'}, text_auto='')
    #convert table of emplacement to image
-    dfi.export(table4, "images/table_emp.png")
+    fig.write_image("images/table_emp.png")
+    #plot chart 
+    st.plotly_chart(fig)
+    
 
 
 
@@ -151,7 +173,7 @@ if uploaded_file1 :
         pdf.cell(60, 20, 'Nombre total des DI du mois', 'C')
         pdf.image('images/fig_DI.jpeg', x=5, y=90, w=200,h=150)
 
-        pdf.ln(150)
+        pdf.ln(190)
         pdf.set_font('Times', 'B', 20)
         pdf.cell(60, 20, 'Les Top 10 des US sur lesquelles on a plus de de DI :', 'C')
 
@@ -159,32 +181,34 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 16)
         pdf.cell(10)
         pdf.cell(60, 20, '* Top 5 des US sur lesquelles on a plus de de DI PARC T1', 'C')
-        pdf.image('images/table_t1.png', x=45, y=245, w=38,h=42)
-
-        pdf.ln(30)
+        pdf.image('images/table_t1.png', x=30, y=35, w=150,h=100)
+        
+        pdf.ln(110)
         pdf.set_font('Times', '', 16)
         pdf.cell(10)
         pdf.cell(60, 20, '* Top 5 des US sur lesquelles on a plus de de DI PARC T2', 'C')
-        pdf.image('images/table_t2.png', x=45, y=25, w=38,h=42)
+        pdf.image('images/table_t2.png', x=30, y=145, w=150,h=100)
+        
         
 
-
-        pdf.ln(55)
+        pdf.ln(155)
         pdf.set_font('Times', 'B', 20)
-        pdf.cell(60, 20, 'Top 5 des défaillance sujet de (DI) :', 'C')
-        pdf.image('images/table_mtr.png', x=45, y=80, w=120,h=45)
-
-        pdf.ln(60)
+        
+        pdf.cell(60, 60, 'Top 5 des défaillance sujet de (DI) :', 'C')
+        pdf.image('images/big_logo.png', 10, 8, 33)
+        pdf.image('images/table_mtr.png', x=0, y=50, w=200,h=130)
+        
+        pdf.ln(165)
         pdf.set_font('Times', 'B', 20)
         pdf.cell(60, 20, 'Top 5 emplacements des défaillances :', 'C')
-        pdf.image('images/table_mtr.png', x=45, y=145, w=120,h=45)
+        pdf.image('images/table_emp.png', x=0, y=188, w=200,h=100) 
         
-
         return pdf.output(dest='S').encode('latin-1')
 
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    
     
 
     # Add a download button:
