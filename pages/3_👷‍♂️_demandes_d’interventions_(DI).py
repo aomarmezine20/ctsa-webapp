@@ -5,11 +5,14 @@ from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
 import dataframe_image as dfi
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 st.set_page_config(page_title= 'demandes d’interventions (DI)', page_icon="👷‍♂️")
 st. title('suivi des demandes d’interventions (DI)')
 
 uploaded_file1 =st.file_uploader('fichier demandes d’interventions', type=['xlsx','xls','csv'])
+driver = webdriver.Chrome(ChromeDriverManager().install())
 
 
 if uploaded_file1 :
