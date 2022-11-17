@@ -4,6 +4,7 @@ import plotly.express as px # pip install plotly-express
 from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
+import dataframe_image as dfi
 
 st.set_page_config(page_title= 'demandes d’interventions (DI)', page_icon="👷‍♂️")
 st. title('suivi des demandes d’interventions (DI)')
@@ -72,29 +73,46 @@ if uploaded_file1 :
     dfcount_t1 = dfcount_t1.sort_values(ascending=False)
     dfcount_t2 = dfcount_t2.sort_values(ascending=False)
 
-    #show top 5 of every pacr us PARC T1
+    #show top 5 of every pacr us PARC T1---------------------------------------------------
     st.subheader("5 US/T1")
     st.markdown('**Top 5 des US sur lesquelles on a plus de de DI PARC T1**')
     st.write(dfcount_t1.head(n=5))
+    #convert serie to datafram
+    table1=pd.DataFrame(dfcount_t1.head(5))
+   #convert table of top 5 us t1 to image
+    dfi.export(table1, "images/table_t1.png")
     
     
-    #show top 5 of every pacr us PARC T2
+    #show top 5 of every pacr us PARC T2----------------------------------------------------------
     st.subheader("5 US/T2")
     st.markdown('**Top 5 des US sur lesquelles on a plus de de DI PARC T2**')
     st.write(dfcount_t2.head(n=5))
+    #convert serie to datafram
+    table2=pd.DataFrame(dfcount_t2.head(5))
+   #convert table of top 5 us T2 to image
+    dfi.export(table2, "images/table_t2.png")
 
-    #show top 5 défaillance sujet DI
+    #show top 5 défaillance sujet DI----------------------------------------------------------------
     st.header('Top 5 des défaillance sujet de (DI)')
     dfcount_mtr =df['Matériel du signalement Description'].value_counts()
     st.dataframe(dfcount_mtr.head(5))
 
-    #Top 5 emplacements des défaillances
+    #convert serie to datafram
+    table3=pd.DataFrame(dfcount_mtr.head(5))
+   #convert table of matriel deffi to image
+    dfi.export(table3, "images/table_mtr.png")
+
+    #Top 5 emplacements des défaillances----------------------------------------------------------
     st.header('Top 5 emplacements des défaillances')
     dfcount_emp =df[['Point principal associé','Point principal associé Description']].value_counts()
 
     dfcount_emp.to_frame()
 
     st.dataframe(dfcount_emp.head(5))
+    #convert serie to datafram
+    table4=pd.DataFrame(dfcount_emp.head(5))
+   #convert table of emplacement to image
+    dfi.export(table4, "images/table_emp.png")
 
 
 
@@ -138,6 +156,25 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 16)
         pdf.cell(10)
         pdf.cell(60, 20, '* Top 5 des US sur lesquelles on a plus de de DI PARC T1', 'C')
+        pdf.image('images/table_t1.png', x=45, y=245, w=38,h=42)
+
+        pdf.ln(30)
+        pdf.set_font('Times', '', 16)
+        pdf.cell(10)
+        pdf.cell(60, 20, '* Top 5 des US sur lesquelles on a plus de de DI PARC T2', 'C')
+        pdf.image('images/table_t2.png', x=45, y=25, w=38,h=42)
+        
+
+
+        pdf.ln(55)
+        pdf.set_font('Times', 'B', 20)
+        pdf.cell(60, 20, 'Top 5 des défaillance sujet de (DI) :', 'C')
+        pdf.image('images/table_mtr.png', x=45, y=80, w=120,h=45)
+
+        pdf.ln(60)
+        pdf.set_font('Times', 'B', 20)
+        pdf.cell(60, 20, 'Top 5 emplacements des défaillances :', 'C')
+        pdf.image('images/table_mtr.png', x=45, y=145, w=120,h=45)
         
 
         return pdf.output(dest='S').encode('latin-1')
@@ -145,12 +182,13 @@ if uploaded_file1 :
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    
 
     # Add a download button:
+    st.subheader("Télecharger PDF")
     st.download_button(
-        label="Download PDF",
+        label="Télecharger Resultat PDF",
         data=gen_pdf(),
-        file_name="file_name.pdf",
+        file_name="suivi des demandes d'interventions (DI) Ctsa.pdf",
         mime="application/pdf",
     )
