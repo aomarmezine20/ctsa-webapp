@@ -31,6 +31,7 @@ if uploaded_file1 :
     df["code de l'état"]=df["Code de l'état"].replace('AWAITINGREAL',"Attente prise en compte",inplace=True)
     fig = px.pie(df, names="Code de l'état")
     st.plotly_chart(fig)
+    fig.write_image("images/fig_DI.jpeg")
 
     #calcule the 10top of Us that have max of DI 
     st.header('Les Top 10 des US sur lesquelles on a plus de de DI')
@@ -104,8 +105,42 @@ if uploaded_file1 :
     def gen_pdf():
         pdf = FPDF()
         pdf.add_page()
-        pdf.set_font("Arial", size = 15)
-        return bytes(pdf.output(dest='S'),encoding="utf-8")
+        pdf.set_font("Helvetica", size=24)
+        pdf.image('images/big_logo.png', 10, 8, 33)
+        # Arial bold 15
+        pdf.set_font('Arial', 'B', 20)
+        # Move to the right
+        pdf.cell(40)
+
+        pdf.cell(140, 15, "suivi des demandes d'interventions (DI)", 1, 0, 'C')
+
+        pdf.ln(30)
+        pdf.set_font('Arial', 'B', 25)
+        
+        pdf.cell(60, 20, 'Nombre total des DI du mois', 'C')
+        pdf.ln(15)
+
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(10)
+        pdf.cell(60, 20, "* le nombre des demandes d'interventions du mois  "+ str(int(df['Month'].values[0]))+' est ' +str(df["Code de l'état"].count()) + ' interventions', 'C')
+
+        pdf.ln(15)
+        
+        pdf.set_font('Times', 'B', 25)
+        pdf.cell(60, 20, 'Nombre total des DI du mois', 'C')
+        pdf.image('images/fig_DI.jpeg', x=5, y=90, w=200,h=150)
+
+        pdf.ln(150)
+        pdf.set_font('Times', 'B', 20)
+        pdf.cell(60, 20, 'Les Top 10 des US sur lesquelles on a plus de de DI :', 'C')
+
+        pdf.ln(10)
+        pdf.set_font('Times', '', 16)
+        pdf.cell(10)
+        pdf.cell(60, 20, '* Top 5 des US sur lesquelles on a plus de de DI PARC T1', 'C')
+        
+
+        return pdf.output(dest='S').encode('latin-1')
 
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
