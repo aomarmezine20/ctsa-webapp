@@ -61,7 +61,7 @@ if uploaded_file1 :
     #creat list of parc T2
     def parc2():
         T=[]
-        for i in range(74,100):
+        for i in range(75,100):
             T.append('US0'+str(i))
         for i in range(100,125):
             T.append('US'+str(i))
