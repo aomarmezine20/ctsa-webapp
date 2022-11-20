@@ -51,7 +51,7 @@ if uploaded_file1 :
     fig = px.pie(df_t1, names="Nature d'intervention",color="Nature d'intervention")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
-    fig.write_image("images/fig_DI.jpeg")
+    fig.write_image("images/fig_Intrv1.jpeg")
     #make data frame for just nature of intervention and count how much for every values 
     df_intv_count = df_t1["Nature d'intervention"].value_counts()
 
@@ -72,6 +72,7 @@ if uploaded_file1 :
 
     #plot it 
     st.plotly_chart(fig)
+    fig.write_image("images/fig_Intrv2.jpeg")
     
     st.subheader('Taux d’occupation par parc :')
     st.header('Suivi des interventions correctives')
@@ -86,6 +87,7 @@ if uploaded_file1 :
     fig = px.pie(df_t1_cr, names="Priorité")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
+    fig.write_image("images/fig_Intrv3.jpeg")
     #explaine every priority key of chart
     st.markdown("* **FJ ( y compris les FJ prioritaire):** Fin de Jour, c’est une panne mineur qui peut etre planifiée à la fin de l’exploitation de la rame")
     st.markdown("* **FT :** Fin de Tour, c’est une panne qui nécessite le rapatriement de la rame à la fin de sa course")
@@ -100,6 +102,7 @@ if uploaded_file1 :
                      "0": "Nbr des OT",})
 
     st.plotly_chart(fig)
+    fig.write_image("images/fig_Intrv4.jpeg")
 
     st.subheader("La répartition des interventions correctives en fonction des ‘’Etat’’ :")
     
@@ -107,6 +110,7 @@ if uploaded_file1 :
     fig = px.pie(df_t1_cr, names="Etat")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
+    fig.write_image("images/fig_Intrv5.jpeg")
 
 
 
@@ -121,7 +125,7 @@ if uploaded_file1 :
     fig = px.pie(df_t2, names="Nature d'intervention",color="Nature d'intervention")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
-    fig.write_image("images/fig_DI.jpeg")
+    fig.write_image("images/fig_intrv6.jpeg")
     #make data frame for just nature of intervention and count how much for every values 
     df_intv_count2 = df_t2["Nature d'intervention"].value_counts()
 
@@ -142,6 +146,7 @@ if uploaded_file1 :
 
     #plot it 
     st.plotly_chart(fig)
+    fig.write_image("images/fig_intrv7.jpeg")
     
     st.subheader('Taux d’occupation par parc :')
     st.header('Suivi des interventions correctives')
@@ -156,6 +161,7 @@ if uploaded_file1 :
     fig = px.pie(df_t2_cr, names="Priorité")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
+    fig.write_image("images/fig_intrv8.jpeg")
     #explaine every priority key of chart
     st.markdown("* **FJ ( y compris les FJ prioritaire):** Fin de Jour, c’est une panne mineur qui peut etre planifiée à la fin de l’exploitation de la rame")
     st.markdown("* **FT :** Fin de Tour, c’est une panne qui nécessite le rapatriement de la rame à la fin de sa course")
@@ -170,6 +176,7 @@ if uploaded_file1 :
                      "0": "Nbr des OT",})
 
     st.plotly_chart(fig)
+    fig.write_image("images/fig_intrv9.jpeg")
 
     st.subheader("La répartition des interventions correctives en fonction des ‘’Etat’’ :")
     
@@ -177,3 +184,330 @@ if uploaded_file1 :
     fig = px.pie(df_t2_cr, names="Etat")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
+    fig.write_image("images/fig_intrv10.jpeg")
+    def footer(pdf):
+        #footer
+        pdf.set_y(266)
+        # Select Arial italic 8
+        pdf.set_font('Arial', 'I', 12)
+        # Print centered page number
+        pdf.cell(0, 10, 'Page %s' % pdf.page_no(), 0, 0, 'C')
+
+    def header(pdf):
+        pdf.image('images/big_logo.png', 10, 8, 33)
+
+#-------------------- Pdf ---------------------------------------------------------------------------------------------------
+
+    @st.cache
+    def gen_pdf():
+        pdf = FPDF()
+        pdf.add_page()
+        
+        pdf.set_font("Helvetica", size=24)
+        header(pdf)
+        # Arial bold 15
+        pdf.set_font('Arial', 'B', 20)
+        # Move to the right
+        pdf.cell(40)
+        
+        pdf.cell(140, 15, "les statistiques des interventions", 1, 0, 'C')
+
+        pdf.ln(30)
+        pdf.set_font('Arial', 'B', 25)
+# ------------------ PARC T1 -----------------------------------------------------------------------------------------------
+        pdf.cell(60, 20, '         ----------------- PARC T1 ------------------', 'C')
+        pdf.ln(15)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 20, "Le nombre total d'ordre de travaux", 'C')
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.cell(60, 20, '  * le nombre des interventions du mois est '+str(df_t1["Code de l'intervention"].count()), 'C')
+
+        pdf.ln(15)
+        pdf.set_font('Times', 'B', 20)
+        
+
+        pdf.cell(60, 20, "La répartition des interventions de maintenance par type :", 'C')
+        pdf.image('images/fig_Intrv1.jpeg', x=5, y=110, w=200,h=150)
+        #footer
+        footer(pdf)
+
+        pdf.ln(190)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 57, "Suivi de la maintenance préventive:", 'C')
+        header(pdf)
+
+        pdf.ln(30)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(10)
+        pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+
+        pdf.ln(0)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 57, "Suivi des interventions préventives :", 'C')
+        pdf.image('images/fig_Intrv2.jpeg', x=5, y=80, w=200,h=150)
+
+        footer(pdf)
+
+        pdf.ln(190)
+        pdf.set_font('Times', 'B', 20)
+        
+
+        pdf.cell(60, 57, "Taux d'occupation par parc :", 'C')
+        header(pdf)
+
+        pdf.ln(140)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 57, "Suivi des interventions correctives:", 'C')
+        pdf.ln(39)
+        pdf.cell(10)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20, '* le nombre des interventions correctives du mois est '+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+        footer(pdf)
+        pdf.ln(0)
+        pdf.set_font('Times', 'B', 20)
+        
+        pdf.ln(120)
+        pdf.cell(60, 57, "La répartition des interventions correctives par priorités :", 'C')
+        
+        pdf.image('images/fig_Intrv3.jpeg', x=5, y=50, w=200,h=150)
+        pdf.ln(180)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* FJ ( y compris les FJ prioritaire):","C")
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(120, 20, "Fin de Jour, c'est une panne mineur qui" )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "peut etre planifiée à la fin de l'exploitation de la rame", 'C' )
+
+        pdf.ln(10)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* FT :","C")
+        pdf.set_font('Times', '', 15)
+        pdf.cell(-45)
+        pdf.cell(20, 20, "Fin de Tour, c'est une panne qui nécessite le rapatriement de la rame " )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "à la fin de sa course", 'C' )
+
+
+        pdf.ln(10)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* HLP :","C")
+        pdf.set_font('Times', '', 15)
+        pdf.cell(-42)
+        pdf.cell(20, 20, "Haut le Pied, c'est une panne majeur qui nécessite l'évacuation des voyageurs  " )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "et le rapatriement immédiat de le rame", 'C' )
+
+
+        pdf.ln(10)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* RP :","C")
+        pdf.set_font('Times', '', 15)
+        pdf.cell(-46)
+        pdf.cell(20, 20, "Remorquage/Poussage, c'est une panne majeur qui nécessite l'évacuation   " )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "des voyageurs et le rapatriement de la rame en mode US-US soit par remorquage ", 'C' )
+
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "[ US menante], soit par poussage [US menée] ou par camion rail-route.", 'C' )
+
+        
+
+        pdf.set_font('Times', 'B', 20)
+        pdf.ln(65)
+        pdf.cell(10)
+        pdf.cell(50, 75, "La répartition des interventions par famille de défaut :", 'C' )
+
+        pdf.image('images/fig_Intrv4.jpeg', x=5, y=65, w=200,h=150)
+        header(pdf)
+        footer(pdf)
+
+        pdf.set_font('Times', 'B', 20)
+        pdf.ln(65)
+        pdf.cell(10)
+        pdf.cell(50, 75, "La répartition des interventions correctives en fonction ","C")
+        pdf.cell(-46)
+        pdf.cell(10, 90,"des Etat :", 'C' )
+        pdf.image('images/fig_Intrv5.jpeg', x=5, y=65, w=200,h=150)
+        
+        header(pdf)
+        footer(pdf)
+#---------------   PARC  T2  -----------------------------------------------------------------------------------------------------------
+        pdf.ln(65)
+        pdf.cell(10)
+        pdf.ln(30)
+        pdf.set_font('Arial', 'B', 25)
+        header(pdf)
+        pdf.cell(60, 20, '         ----------------- PARC T2 ------------------', 'C')
+        pdf.ln(15)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 20, "Le nombre total d'ordre de travaux", 'C')
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.cell(60, 20, '  * le nombre des interventions du mois est '+str(df_t2["Code de l'intervention"].count()), 'C')
+
+        pdf.ln(15)
+        pdf.set_font('Times', 'B', 20)
+        
+
+        pdf.cell(60, 20, "La répartition des interventions de maintenance par type :", 'C')
+        pdf.image('images/fig_Intrv6.jpeg', x=5, y=110, w=200,h=150)
+        #footer
+        footer(pdf)
+
+        pdf.ln(190)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 57, "Suivi de la maintenance préventive:", 'C')
+        header(pdf)
+
+        pdf.ln(30)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(10)
+        pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+
+        pdf.ln(0)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 57, "Suivi des interventions préventives :", 'C')
+        pdf.image('images/fig_Intrv7.jpeg', x=5, y=80, w=200,h=150)
+
+        footer(pdf)
+
+        pdf.ln(190)
+        pdf.set_font('Times', 'B', 20)
+        
+
+        pdf.cell(60, 57, "Taux d'occupation par parc :", 'C')
+        header(pdf)
+
+        pdf.ln(140)
+        pdf.set_font('Times', 'B', 25)
+        
+
+        pdf.cell(60, 57, "Suivi des interventions correctives:", 'C')
+        pdf.ln(39)
+        pdf.cell(10)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 20, '* le nombre des interventions correctives du mois est '+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+        footer(pdf)
+        pdf.ln(0)
+        pdf.set_font('Times', 'B', 20)
+        
+        pdf.ln(120)
+        pdf.cell(60, 57, "La répartition des interventions correctives par priorités :", 'C')
+        
+        pdf.image('images/fig_Intrv8.jpeg', x=5, y=50, w=200,h=150)
+        pdf.ln(180)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* FJ ( y compris les FJ prioritaire):","C")
+        pdf.cell(20)
+        pdf.set_font('Times', '', 15)
+        pdf.cell(120, 20, "Fin de Jour, c'est une panne mineur qui" )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "peut etre planifiée à la fin de l'exploitation de la rame", 'C' )
+
+        pdf.ln(10)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* FT :","C")
+        pdf.set_font('Times', '', 15)
+        pdf.cell(-45)
+        pdf.cell(20, 20, "Fin de Tour, c'est une panne qui nécessite le rapatriement de la rame " )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "à la fin de sa course", 'C' )
+
+
+        pdf.ln(10)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* HLP :","C")
+        pdf.set_font('Times', '', 15)
+        pdf.cell(-42)
+        pdf.cell(20, 20, "Haut le Pied, c'est une panne majeur qui nécessite l'évacuation des voyageurs  " )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "et le rapatriement immédiat de le rame", 'C' )
+
+
+        pdf.ln(10)
+        pdf.cell(10)
+        pdf.set_font('Times', 'B', 15)
+        pdf.cell(60, 20, "* RP :","C")
+        pdf.set_font('Times', '', 15)
+        pdf.cell(-46)
+        pdf.cell(20, 20, "Remorquage/Poussage, c'est une panne majeur qui nécessite l'évacuation   " )
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "des voyageurs et le rapatriement de la rame en mode US-US soit par remorquage ", 'C' )
+
+        pdf.ln(5)
+        pdf.cell(15)
+        pdf.cell(60, 20, "[ US menante], soit par poussage [US menée] ou par camion rail-route.", 'C' )
+
+        
+
+        pdf.set_font('Times', 'B', 20)
+        pdf.ln(65)
+        pdf.cell(10)
+        pdf.cell(50, 75, "La répartition des interventions par famille de défaut :", 'C' )
+
+        pdf.image('images/fig_Intrv9.jpeg', x=5, y=65, w=200,h=150)
+        header(pdf)
+        footer(pdf)
+
+        pdf.set_font('Times', 'B', 20)
+        pdf.ln(65)
+        pdf.cell(10)
+        pdf.cell(50, 75, "La répartition des interventions correctives en fonction ","C")
+        pdf.cell(-46)
+        pdf.cell(10, 90,"des Etat :", 'C' )
+        pdf.image('images/fig_Intrv10.jpeg', x=5, y=65, w=200,h=150)
+        footer(pdf)
+
+
+        return pdf.output(dest='S').encode('latin-1')
+
+    # Embed PDF to display it:
+    base64_pdf = b64encode(gen_pdf()).decode("utf-8")
+    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    #to show pdf in page 
+    # st.markdown(pdf_display, unsafe_allow_html=True)
+    
+    
+
+    # Add a download button:
+    st.subheader("Télecharger PDF")
+    st.download_button(
+        label="Télecharger Resultat PDF",
+        data=gen_pdf(),
+        file_name="suivi les interventions  Ctsa.pdf",
+        mime="application/pdf",
+    )

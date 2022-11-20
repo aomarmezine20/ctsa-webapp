@@ -142,19 +142,29 @@ if uploaded_file1 :
 
 
     #show pdf 
+    def footer(pdf):
+        #footer
+        pdf.set_y(266)
+        # Select Arial italic 8
+        pdf.set_font('Arial', 'I', 12)
+        # Print centered page number
+        pdf.cell(0, 10, 'Page %s' % pdf.page_no(), 0, 0, 'C')
 
+    def header(pdf):
+        pdf.image('images/big_logo.png', 10, 8, 33)
     
     @st.cache
     def gen_pdf():
         pdf = FPDF()
         pdf.add_page()
+        
         pdf.set_font("Helvetica", size=24)
-        pdf.image('images/big_logo.png', 10, 8, 33)
+        header(pdf)
         # Arial bold 15
         pdf.set_font('Arial', 'B', 20)
         # Move to the right
         pdf.cell(40)
-
+        
         pdf.cell(140, 15, "suivi des demandes d'interventions (DI)", 1, 0, 'C')
 
         pdf.ln(30)
@@ -172,7 +182,9 @@ if uploaded_file1 :
         pdf.set_font('Times', 'B', 25)
         pdf.cell(60, 20, 'Nombre total des DI du mois', 'C')
         pdf.image('images/fig_DI.jpeg', x=5, y=90, w=200,h=150)
+        footer(pdf)
 
+        
         pdf.ln(190)
         pdf.set_font('Times', 'B', 20)
         pdf.cell(60, 20, 'Les Top 10 des US sur lesquelles on a plus de de DI :', 'C')
@@ -183,6 +195,7 @@ if uploaded_file1 :
         pdf.cell(60, 20, '* Top 5 des US sur lesquelles on a plus de de DI PARC T1', 'C')
         pdf.image('images/table_t1.png', x=30, y=35, w=150,h=100)
         
+        
         pdf.ln(110)
         pdf.set_font('Times', '', 16)
         pdf.cell(10)
@@ -190,24 +203,26 @@ if uploaded_file1 :
         pdf.image('images/table_t2.png', x=30, y=145, w=150,h=100)
         
         
-
+        footer(pdf)
         pdf.ln(155)
         pdf.set_font('Times', 'B', 20)
         
         pdf.cell(60, 60, 'Top 5 des défaillance sujet de (DI) :', 'C')
-        pdf.image('images/big_logo.png', 10, 8, 33)
+        header(pdf)
         pdf.image('images/table_mtr.png', x=0, y=50, w=200,h=130)
         
         pdf.ln(165)
         pdf.set_font('Times', 'B', 20)
         pdf.cell(60, 20, 'Top 5 emplacements des défaillances :', 'C')
         pdf.image('images/table_emp.png', x=0, y=188, w=200,h=100) 
+        footer(pdf)
         
         return pdf.output(dest='S').encode('latin-1')
 
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    #  st.markdown(pdf_display, unsafe_allow_html=True)
     
     
 

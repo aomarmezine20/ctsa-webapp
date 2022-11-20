@@ -196,7 +196,16 @@ if uploaded_file2:
     st.write('Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM')
 
 
+    def footer(pdf):
+        #footer
+        pdf.set_y(266)
+        # Select Arial italic 8
+        pdf.set_font('Arial', 'I', 12)
+        # Print centered page number
+        pdf.cell(0, 10, 'Page %s' % pdf.page_no(), 0, 0, 'C')
 
+    def header(pdf):
+        pdf.image('images/big_logo.png', 10, 8, 33)
 
     #---------print pdf--------------------------------------------------------------------------
     @st.cache
@@ -204,7 +213,7 @@ if uploaded_file2:
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Helvetica", size=24)
-        pdf.image('images/big_logo.png', 10, 8, 33)
+        header(pdf)
         # Arial bold 15
         pdf.set_font('Arial', 'B', 20)
         # Move to the right
@@ -246,12 +255,13 @@ if uploaded_file2:
         pdf.cell(20)
         pdf.set_font('Times', '', 15)
         pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfmin1['KM'].min()) +'   KM', 'C')
+        footer(pdf)
         #------------T1 cumul -------------------------------------------
         pdf.ln(70)
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
         pdf.image('images/fig_T1cumul.jpeg', x=5, y=30, w=200,h=150)
-        pdf.image('images/big_logo.png', 10, 8, 33)
+        header(pdf)
         
 
         pdf.ln(170)
@@ -273,17 +283,18 @@ if uploaded_file2:
         pdf.set_font('Times', '', 15)
         pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfF1['KM cumul'].min()) +'   KM', 'C')
         
+        footer(pdf)
         pdf.ln(100)
         pdf.set_font('Arial', 'B', 25)
         pdf.ln(100)
         pdf.cell(70, 65, 'Le Kilométrage pour PARC T2', 'C')
-        pdf.image('images/big_logo.png', 10, 8, 33)
+        header(pdf)
         #----------------T2-----------------------------------------------------------
         pdf.ln(40)
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
         pdf.image('images/fig_T2.jpeg', x=5, y=49, w=200,h=150)
-
+        header(pdf)
         pdf.ln(150)
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
@@ -303,6 +314,7 @@ if uploaded_file2:
         pdf.cell(20)
         pdf.set_font('Times', '', 15)
         pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfmin['KM'].min()) +'   KM', 'C')
+        footer(pdf)
 
         #------------T2 cumul ----------------------------------------------------
 
@@ -310,7 +322,7 @@ if uploaded_file2:
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
         pdf.image('images/fig_T2cumul.jpeg', x=5, y=30, w=200,h=150)
-        pdf.image('images/big_logo.png', 10, 8, 33)
+        header(pdf)
         
 
         pdf.ln(170)
@@ -331,6 +343,7 @@ if uploaded_file2:
         pdf.cell(20)
         pdf.set_font('Times', '', 15)
         pdf.cell(60, 20,  '* Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM', 'C')
+        footer(pdf)
         
         
         return pdf.output(dest='S').encode('latin-1')
@@ -340,7 +353,7 @@ if uploaded_file2:
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
-    
+    #   st.markdown(pdf_display, unsafe_allow_html=True)
 
     # Add a download button:
 
