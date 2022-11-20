@@ -42,7 +42,7 @@ if uploaded_file1 :
         
     df_t1 = df[df['US'].isin(parc1())]
     df_t2 = df[df['US'].isin(parc2())]
-    st.dataframe(df_t1)
+    
 #-----------------PARC T1 --------------------------------------------------------------------------------------------------------------------------
     st.header('-----------------PARC T1------------------')
     st.subheader('Le nombre total d’ordre de travaux')
