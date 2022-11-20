@@ -373,7 +373,7 @@ if uploaded_file1 :
         
 
         pdf.cell(60, 20, "La répartition des interventions de maintenance par type :", 'C')
-        pdf.image('images/fig_Intrv6.jpeg', x=5, y=110, w=200,h=150)
+        pdf.image('images/fig_intrv6.jpeg', x=5, y=110, w=200,h=150)
         #footer
         footer(pdf)
 
@@ -394,7 +394,7 @@ if uploaded_file1 :
         
 
         pdf.cell(60, 57, "Suivi des interventions préventives :", 'C')
-        pdf.image('images/fig_Intrv7.jpeg', x=5, y=80, w=200,h=150)
+        pdf.image('images/fig_intrv7.jpeg', x=5, y=80, w=200,h=150)
 
         footer(pdf)
 
@@ -421,7 +421,7 @@ if uploaded_file1 :
         pdf.ln(120)
         pdf.cell(60, 57, "La répartition des interventions correctives par priorités :", 'C')
         
-        pdf.image('images/fig_Intrv8.jpeg', x=5, y=50, w=200,h=150)
+        pdf.image('images/fig_intrv8.jpeg', x=5, y=50, w=200,h=150)
         pdf.ln(180)
         pdf.cell(10)
         pdf.set_font('Times', 'B', 15)
@@ -479,7 +479,7 @@ if uploaded_file1 :
         pdf.cell(10)
         pdf.cell(50, 75, "La répartition des interventions par famille de défaut :", 'C' )
 
-        pdf.image('images/fig_Intrv9.jpeg', x=5, y=65, w=200,h=150)
+        pdf.image('images/fig_intrv9.jpeg', x=5, y=65, w=200,h=150)
         header(pdf)
         footer(pdf)
 
@@ -489,7 +489,7 @@ if uploaded_file1 :
         pdf.cell(50, 75, "La répartition des interventions correctives en fonction ","C")
         pdf.cell(-46)
         pdf.cell(10, 90,"des Etat :", 'C' )
-        pdf.image('images/fig_Intrv10.jpeg', x=5, y=65, w=200,h=150)
+        pdf.image('images/fig_intrv10.jpeg', x=5, y=65, w=200,h=150)
         footer(pdf)
 
 
