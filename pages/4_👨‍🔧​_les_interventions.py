@@ -21,7 +21,7 @@ if uploaded_file1 :
 
     st.dataframe(df)
 
-    df[['US','autre']] = df['Matériel'].str.split(".",expand=True)
+    df[['US','autre','autre2','autre3']] = df['Matériel'].str.split(".",expand=True)
 
     #creat list of T1 parc 
     def parc1() :
@@ -42,7 +42,6 @@ if uploaded_file1 :
         
     df_t1 = df[df['US'].isin(parc1())]
     df_t2 = df[df['US'].isin(parc2())]
-    
 #-----------------PARC T1 --------------------------------------------------------------------------------------------------------------------------
     st.header('-----------------PARC T1------------------')
     st.subheader('Le nombre total d’ordre de travaux')
