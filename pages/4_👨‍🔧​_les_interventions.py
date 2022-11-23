@@ -60,7 +60,7 @@ if uploaded_file1 :
     df_intv_count = df_intv_count.reset_index()
     st.header('Suivi de la maintenance préventive ')
 
-    st.write(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].iloc[:])
+    
 
 #----------------case if values of prventif doesn't existe -----------------------------------------------------
     if df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"].empty :
