@@ -20,8 +20,9 @@ if uploaded_file1 :
     df = pd.read_excel(uploaded_file1)
 
     st.dataframe(df)
-
-    df[['US','autre','autre2','autre3']] = df['Matériel'].str.split(".",expand=True)
+    
+    df['US'] = df['Matériel'].str.split('.').str[0]
+    
 
     #creat list of T1 parc 
     def parc1() :
@@ -58,7 +59,17 @@ if uploaded_file1 :
     #rest index to separate index colomn and make calculation to show every nature of intervention 
     df_intv_count = df_intv_count.reset_index()
     st.header('Suivi de la maintenance préventive ')
-    st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"]))+'** ')
+
+    st.write(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].iloc[:])
+
+#----------------case if values of prventif doesn't existe -----------------------------------------------------
+    if df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+        st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
+    else :
+        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"]))+'** ')
+#---------------------------------------------------------------------------------------------------------------------
+
     st.subheader('Suivi des interventions préventives :')
     #make a new datafram for just perventif intervention and name it 
     df_t1_prv =df_t1[df_t1["Nature d'intervention"]=='PREVENTIF']
@@ -76,8 +87,17 @@ if uploaded_file1 :
     
     st.subheader('Taux d’occupation par parc :')
     st.header('Suivi des interventions correctives')
-    #show nbr of correctif interventions
-    st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"]))+'** ')
+    
+    #-------------if is not any values of correctif --------------------------------------------------------------------------------------
+
+    if df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+        st.markdown('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
+    else :
+
+        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"]))+'** ')
+    #------------------------------------------------------------------------------------
+    
     st.subheader('La répartition des interventions correctives par priorités :')
 
     #make a new datafram for just correctif intervention and name it 
@@ -132,7 +152,16 @@ if uploaded_file1 :
     #rest index to separate index colomn and make calculation to show every nature of intervention 
     df_intv_count2 = df_intv_count2.reset_index()
     st.header('Suivi de la maintenance préventive ')
-    st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"]))+'** ')
+
+#check if is not any values of preventif -------------------------------------------------------------------
+    if df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+        st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
+    else :
+
+        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"]))+'** ')
+#-----------------------------------------------------------------------------------------------------------------------------------
+
     st.subheader('Suivi des interventions préventives :')
     #make a new datafram for just perventif intervention and name it 
     df_t2_prv =df_t2[df_t2["Nature d'intervention"]=='PREVENTIF']
@@ -150,8 +179,21 @@ if uploaded_file1 :
     
     st.subheader('Taux d’occupation par parc :')
     st.header('Suivi des interventions correctives')
+
     #show nbr of correctif interventions
-    st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"]))+'** ')
+
+ #--------------------case if there isn't any values of correctif ------------------------------------
+ 
+
+    if df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+        st.markdown('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
+    else :
+
+        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"]))+'** ')
+#----------------------------------------------------------------------------------------------------
+
+    
     st.subheader('La répartition des interventions correctives par priorités :')
 
     #make a new datafram for just correctif intervention and name it 
@@ -245,8 +287,13 @@ if uploaded_file1 :
         pdf.ln(30)
         pdf.set_font('Times', '', 15)
         pdf.cell(10)
-        pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
-
+    #--------------------case if there isn't any values of preventif 
+        if df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
+        else :
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+    #----------------------------------------------------------------------------------------------------
         pdf.ln(0)
         pdf.set_font('Times', 'B', 25)
         
@@ -271,7 +318,14 @@ if uploaded_file1 :
         pdf.ln(39)
         pdf.cell(10)
         pdf.set_font('Times', '', 15)
-        pdf.cell(60, 20, '* le nombre des interventions correctives du mois est '+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+    #--------------------case if there isn't any values of correctif ------------------------------------
+
+        if df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
+        else :
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+    #----------------------------------------------------------------------------------------------------
         footer(pdf)
         pdf.ln(0)
         pdf.set_font('Times', 'B', 20)
@@ -387,7 +441,14 @@ if uploaded_file1 :
         pdf.ln(30)
         pdf.set_font('Times', '', 15)
         pdf.cell(10)
-        pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+    #--------------------case if there isn't any values of preventif ------------------------------------
+
+        if df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
+        else :
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+    #------------------------------------------------------------------------------------------------------------
 
         pdf.ln(0)
         pdf.set_font('Times', 'B', 25)
@@ -413,7 +474,15 @@ if uploaded_file1 :
         pdf.ln(39)
         pdf.cell(10)
         pdf.set_font('Times', '', 15)
-        pdf.cell(60, 20, '* le nombre des interventions correctives du mois est '+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+    #--------------------case if there isn't any values of correctif ------------------------------------
+
+        if df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"].empty :
+         #show nbr of correctif interventions
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
+        else :
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+        #------------------------------------------------------------- ------------------------------------
+
         footer(pdf)
         pdf.ln(0)
         pdf.set_font('Times', 'B', 20)
