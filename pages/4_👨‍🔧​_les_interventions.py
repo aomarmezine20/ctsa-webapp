@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
+import datetime as dt
+from datetime import datetime
+import numpy as np
+
 
 
 st.set_page_config(page_title= 'les interventions)', page_icon="👨‍🔧")
@@ -79,13 +83,60 @@ if uploaded_file1 :
     
     #plot the datafram in bar chart 
     fig = px.bar(df_t1_prv2,x="Gamme de maintenance à l'origine de l'intervention", y=df_t1_prv2[0],color='Etat', text_auto='',labels={
-                     "0": "Etat",})
+                     "0": "Etat",},height=600, width=800)
 
     #plot it 
     st.plotly_chart(fig)
     fig.write_image("images/fig_Intrv2.jpeg")
+     
+    st.subheader('Taux d’occupation par parc :')#--------------------------------------------------------------------------------------------------------
+    #calculate each parc taux of occupation in hours for each type of interventions
+    dataFrameSerialization = "legacy"
+
+    #creat new column of datetime of debut of intervention and the end of the intervention
+    df_t1["Date de début"] = pd.to_datetime(df_t1["Date de début de l'intervention"])
+    df_t1["Date de fin"] = pd.to_datetime(df_t1["Date de fin de l'intervention"])
+
+    #make a format of datetime
+    date_format_str = "%d/%m/%Y %H:%M:%S.%f"
+
+    #unifide the columns of datetime in unique format
+    df_t1["Date de début"] = pd.to_datetime(df_t1["Date de début"], format= date_format_str)
+    df_t1["Date de fin"] = pd.to_datetime(df_t1["Date de fin"], format=date_format_str)
+
+
     
-    st.subheader('Taux d’occupation par parc :')
+    #make the difference of the time between the begin of the intervention and the end of the intervention
+    df_t1["heure"] = df_t1["Date de fin"] - df_t1["Date de début"]
+
+    #change the result to hours using this equations
+    df_t1["heure"]= df_t1["heure"]/np.timedelta64(1,'h')
+    #make new table of two column heure and nature of intervention to regroup each type how much have of time 
+    df_t1_taux = df_t1[["heure", "Nature d'intervention"]]
+    
+    #sum each type how much have of hours and make new table to plot it 
+    df_t1_taux = pd.pivot_table(df_t1_taux, index=["Nature d'intervention"],values=['heure'],aggfunc='sum').reset_index()
+    #change the values of hours to int 
+    df_t1_taux["heure"] = df_t1_taux["heure"].astype(int)
+
+    #plot the table to pie graph to show clearely the result 
+    fig = px.pie(df_t1_taux, names= "Nature d'intervention" ,values='heure' ,color="heure")
+    fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
+    st.plotly_chart(fig)
+
+    #save the pie to a image
+    fig.write_image("images/fig_Intrv2.1.jpeg")
+
+    #------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
     st.header('Suivi des interventions correctives')
     
     #-------------if is not any values of correctif --------------------------------------------------------------------------------------
@@ -119,7 +170,7 @@ if uploaded_file1 :
     df_t1_cr2 =df_t1_cr[["Famille de défaut"]].value_counts().reset_index()
     #plot this datafrm in bar chart
     fig = px.bar(df_t1_cr2,x="Famille de défaut",y=df_t1_cr2[0], text_auto='',labels={
-                     "0": "Nbr des OT",})
+                     "0": "Nbr des OT",},height=700, width=850)
 
     st.plotly_chart(fig)
     fig.write_image("images/fig_Intrv4.jpeg")
@@ -177,7 +228,45 @@ if uploaded_file1 :
     st.plotly_chart(fig)
     fig.write_image("images/fig_intrv7.jpeg")
     
-    st.subheader('Taux d’occupation par parc :')
+    st.subheader('Taux d’occupation par parc :')#--------------------------------------------------------------------------------------------------------
+    #calculate each parc taux of occupation in hours for each type of interventions
+    dataFrameSerialization = "legacy"
+
+    #creat new column of datetime of debut of intervention and the end of the intervention
+    df_t2["Date de début"] = pd.to_datetime(df_t2["Date de début de l'intervention"])
+    df_t2["Date de fin"] = pd.to_datetime(df_t2["Date de fin de l'intervention"])
+
+    #make a format of datetime
+    date_format_str = "%d/%m/%Y %H:%M:%S.%f"
+
+    #unifide the columns of datetime in unique format
+    df_t2["Date de début"] = pd.to_datetime(df_t2["Date de début"], format= date_format_str)
+    df_t2["Date de fin"] = pd.to_datetime(df_t2["Date de fin"], format=date_format_str)
+
+
+    
+    #make the difference of the time between the begin of the intervention and the end of the intervention
+    df_t2["heure"] = df_t2["Date de fin"] - df_t2["Date de début"]
+
+    #change the result to hours using this equations
+    df_t2["heure"]= df_t2["heure"]/np.timedelta64(1,'h')
+    #make new table of two column heure and nature of intervention to regroup each type how much have of time 
+    df_t1_taux = df_t2[["heure", "Nature d'intervention"]]
+    
+    #sum each type how much have of hours and make new table to plot it 
+    df_t1_taux = pd.pivot_table(df_t1_taux, index=["Nature d'intervention"],values=['heure'],aggfunc='sum').reset_index()
+    #change the values of hours to int 
+    df_t1_taux["heure"] = df_t1_taux["heure"].astype(int)
+
+    #plot the table to pie graph to show clearely the result 
+    fig = px.pie(df_t1_taux, names= "Nature d'intervention" ,values='heure' ,color="heure")
+    fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
+    st.plotly_chart(fig)
+
+    #save the pie to a image
+    fig.write_image("images/fig_Intrv7.1.jpeg")
+
+    #------------------------------------------------------------------------------------------------------------------------------------
     st.header('Suivi des interventions correctives')
 
     #show nbr of correctif interventions
@@ -227,6 +316,7 @@ if uploaded_file1 :
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
     fig.write_image("images/fig_intrv10.jpeg")
+    
     def footer(pdf):
         #footer
         pdf.set_y(266)
@@ -299,23 +389,23 @@ if uploaded_file1 :
         
 
         pdf.cell(60, 57, "Suivi des interventions préventives :", 'C')
-        pdf.image('images/fig_Intrv2.jpeg', x=5, y=80, w=200,h=150)
+        pdf.image('images/fig_Intrv2.jpeg', x=5, y=80, w=200,h=200)
 
         footer(pdf)
 
         pdf.ln(190)
         pdf.set_font('Times', 'B', 20)
         
-
+        #ploot in pdf taux of occupation
         pdf.cell(60, 57, "Taux d'occupation par parc :", 'C')
         header(pdf)
-
-        pdf.ln(140)
+        pdf.image('images/fig_Intrv2.1.jpeg', x=5, y=60, w=200,h=150)
+        pdf.ln(190)
         pdf.set_font('Times', 'B', 25)
         
 
         pdf.cell(60, 57, "Suivi des interventions correctives:", 'C')
-        pdf.ln(39)
+        pdf.ln(35)
         pdf.cell(10)
         pdf.set_font('Times', '', 15)
     #--------------------case if there isn't any values of correctif ------------------------------------
@@ -391,7 +481,7 @@ if uploaded_file1 :
         pdf.cell(10)
         pdf.cell(50, 75, "La répartition des interventions par famille de défaut :", 'C' )
 
-        pdf.image('images/fig_Intrv4.jpeg', x=5, y=65, w=200,h=150)
+        pdf.image('images/fig_Intrv4.jpeg', x=5, y=65, w=200,h=200)
         header(pdf)
         footer(pdf)
 
@@ -455,7 +545,7 @@ if uploaded_file1 :
         
 
         pdf.cell(60, 57, "Suivi des interventions préventives :", 'C')
-        pdf.image('images/fig_intrv7.jpeg', x=5, y=80, w=200,h=150)
+        pdf.image('images/fig_intrv7.jpeg', x=5, y=80, w=200,h=200)
 
         footer(pdf)
 
@@ -464,14 +554,15 @@ if uploaded_file1 :
         
 
         pdf.cell(60, 57, "Taux d'occupation par parc :", 'C')
+        pdf.image('images/fig_Intrv7.1.jpeg', x=5, y=60, w=200,h=150)
         header(pdf)
 
-        pdf.ln(140)
+        pdf.ln(190)
         pdf.set_font('Times', 'B', 25)
         
 
         pdf.cell(60, 57, "Suivi des interventions correctives:", 'C')
-        pdf.ln(39)
+        pdf.ln(35)
         pdf.cell(10)
         pdf.set_font('Times', '', 15)
     #--------------------case if there isn't any values of correctif ------------------------------------
@@ -548,7 +639,7 @@ if uploaded_file1 :
         pdf.cell(10)
         pdf.cell(50, 75, "La répartition des interventions par famille de défaut :", 'C' )
 
-        pdf.image('images/fig_intrv9.jpeg', x=5, y=65, w=200,h=150)
+        pdf.image('images/fig_intrv9.jpeg', x=5, y=65, w=200,h=200)
         header(pdf)
         footer(pdf)
 
@@ -568,7 +659,8 @@ if uploaded_file1 :
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
     #to show pdf in page 
-    # st.markdown(pdf_display, unsafe_allow_html=True)
+    
+    #st.markdown(pdf_display, unsafe_allow_html=True)
     
     
 
