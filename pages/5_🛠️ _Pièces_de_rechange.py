@@ -291,7 +291,7 @@ if uploaded_file2 and uploaded_file2:
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
     #to show pdf in page 
     
-   #st.markdown(pdf_display, unsafe_allow_html=True)
+    #st.markdown(pdf_display, unsafe_allow_html=True)
     
     
 

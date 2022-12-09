@@ -3,7 +3,7 @@ import pandas as pd # pip install pandas
 import plotly.express as px # pip install plotly-express
 from PIL import Image
 
-st.set_page_config(page_title= 'Excel Plotter', page_icon="📈")
+st.set_page_config(page_title= 'Ctsa Web app', page_icon="📈")
 st. title('Welcome')
 
 
