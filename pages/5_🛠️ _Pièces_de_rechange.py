@@ -4,7 +4,7 @@ import plotly.express as px # pip install plotly-express
 from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
-from st_aggrid import AgGrid
+
 
 st.set_page_config(page_title= 'suivi des Pièces de rechange', page_icon="🛠️")
 st. title('Suivi des Pièces de rechange')
