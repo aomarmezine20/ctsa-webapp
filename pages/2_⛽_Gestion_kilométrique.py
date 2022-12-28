@@ -78,7 +78,12 @@ if uploaded_file2:
     template='plotly_white',
     title =f'<b> Le graphe des KM global parcouru parc T1</b>'
     )
-    st.plotly_chart(fig)    
+    
+    st.plotly_chart(fig)
+    fig.update_layout(
+    autosize=True,
+    width=1300,
+    height=700)
     fig.write_image("images/fig_T1.jpeg")
 
     st.subheader('Synthèse des tendances de production par US sur le mois :')
@@ -90,7 +95,7 @@ if uploaded_file2:
     st.write('Moyenne de production : ''   '+ str(int(dfmin1['KM'].sum() / dfmin1['KM'].count())) +'   KM  ' +'  (hors US qui n’ont pas roulé)' )
 
     #----min value of KM 
-    st.write('Minimum de production : ''   '+ str(dfmin1['KM'].min()) +'   KM')
+    st.write('Minimum de production : ''   '+ str(dfmin1['KM'][dfmin1['KM']>20].min()) +'   KM')
 
 
     # ---T1--CUMMULE -------------------------------------------
@@ -108,6 +113,10 @@ if uploaded_file2:
     title =f'<b> Le graphe des KM global parcouru parc T1 cumul</b>'
     )
     st.plotly_chart(fig)
+    fig.update_layout(
+    autosize=True,
+    width=1300,
+    height=700)
     fig.write_image("images/fig_T1cumul.jpeg")
 
     #----- cumul synthes ---------
@@ -120,7 +129,7 @@ if uploaded_file2:
     st.write('Moyenne de production : ''   '+ str(int(dfF1['KM cumul'].sum() / dfF1['KM cumul'].count())) +'   KM  ' +"  (hors US qui n'ont pas roulé)" )
 
     #----min value of KM 
-    st.write('Minimum de production : ''   '+ str(dfF1['KM cumul'].min()) +'   KM')
+    st.write('Minimum de production : ''   '+ str(dfF1['KM cumul'][dfF1['KM cumul']>20].min()) +'   KM')
 
 
     #------------------   T2   -----------------------------------------------------------------------
@@ -149,7 +158,12 @@ if uploaded_file2:
     template='plotly_white',
     title =f'<b> Le graphe des KM global parcouru parc T2</b>'
     )
+    
     st.plotly_chart(fig)
+    fig.update_layout(
+    autosize=True,
+    width=1100,
+    height=700)
     fig.write_image("images/fig_T2.jpeg")
 
     st.subheader('Synthèse des tendances de production par US sur le mois :')
@@ -161,7 +175,7 @@ if uploaded_file2:
     st.write('Moyenne de production : ''   '+ str(int(dfmin['KM'].sum() / dfmin['KM'].count())) +'   KM  ' + '  (hors US qui n’ont pas roulé)')
 
     #----min value of KM 
-    st.write('Minimum de production : ''   '+ str(dfmin['KM'].min()) +'   KM')
+    st.write('Minimum de production : ''   '+ str(dfmin['KM'][dfmin['KM']>20].min()) +'   KM')
     #-------------------------------------------------------------------------------------------------------
 
 
@@ -181,6 +195,10 @@ if uploaded_file2:
     title =f'<b> Le graphe des KM global parcouru parc T2 cumul</b>'
     )
     st.plotly_chart(fig)
+    fig.update_layout(
+    autosize=True,
+    width=1100,
+    height=700)
     fig.write_image("images/fig_T2cumul.jpeg")
 
     #----- cumul synthes ---------
@@ -193,7 +211,7 @@ if uploaded_file2:
     st.write('Moyenne de production : ''   '+ str(int(dfF['KM cumul'].sum() / dfF['KM cumul'].count())) +'   KM  ' +'  (hors US qui n’ont pas roulé)' )
 
     #----min value of KM 
-    st.write('Minimum de production : ''   '+ str(dfF['KM cumul'].min()) +'   KM')
+    st.write('Minimum de production : ''   '+ str(dfF['KM cumul'][dfF['KM cumul']>20].min()) +'   KM')
 
 
     def footer(pdf):
@@ -234,7 +252,7 @@ if uploaded_file2:
         # Line break
         pdf.ln(15)
         pdf.cell(0)
-        pdf.image('images/fig_T1.jpeg', x=5, y=69, w=200,h=150)
+        pdf.image('images/fig_T1.jpeg', x=5, y=69, w=206,h=150)
         # Line break
         pdf.ln(150)
         pdf.set_font('Times', 'B', 15)
@@ -260,7 +278,7 @@ if uploaded_file2:
         pdf.ln(70)
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
-        pdf.image('images/fig_T1cumul.jpeg', x=5, y=30, w=200,h=150)
+        pdf.image('images/fig_T1cumul.jpeg', x=5, y=30, w=206,h=150)
         header(pdf)
         
 
@@ -293,7 +311,7 @@ if uploaded_file2:
         pdf.ln(40)
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
-        pdf.image('images/fig_T2.jpeg', x=5, y=49, w=200,h=150)
+        pdf.image('images/fig_T2.jpeg', x=5, y=49, w=206,h=150)
         header(pdf)
         pdf.ln(150)
         pdf.set_font('Times', 'B', 15)
@@ -321,7 +339,7 @@ if uploaded_file2:
         pdf.ln(70)
         pdf.set_font('Times', 'B', 15)
         pdf.cell(10)
-        pdf.image('images/fig_T2cumul.jpeg', x=5, y=30, w=200,h=150)
+        pdf.image('images/fig_T2cumul.jpeg', x=5, y=30, w=206,h=150)
         header(pdf)
         
 
@@ -353,7 +371,7 @@ if uploaded_file2:
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
-    #   st.markdown(pdf_display, unsafe_allow_html=True)
+    #st.markdown(pdf_display, unsafe_allow_html=True)
 
     # Add a download button:
 

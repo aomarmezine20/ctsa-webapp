@@ -130,7 +130,7 @@ if uploaded_file1 :
 
     
     #convert serie to datafram
-    table4=pd.DataFrame(dfcount_emp.head(5))
+    table4=pd.DataFrame(dfcount_emp.head(10))
     
     fig = px.bar(table4, labels={'index':'Point principal associé Description','value':'Nbr DI'}, text_auto='')
    #convert table of emplacement to image
@@ -210,11 +210,11 @@ if uploaded_file1 :
         pdf.cell(60, 60, 'Top 5 des défaillance sujet de (DI) :', 'C')
         header(pdf)
         pdf.image('images/table_mtr.png', x=0, y=50, w=200,h=130)
-        
-        pdf.ln(165)
+        footer(pdf)
+        pdf.ln(250)
         pdf.set_font('Times', 'B', 20)
         pdf.cell(60, 20, 'Top 5 emplacements des défaillances :', 'C')
-        pdf.image('images/table_emp.png', x=0, y=188, w=200,h=100) 
+        pdf.image('images/table_emp.png', x=0, y=30, w=206,h=150) 
         footer(pdf)
         
         return pdf.output(dest='S').encode('latin-1')
@@ -222,7 +222,7 @@ if uploaded_file1 :
     # Embed PDF to display it:
     base64_pdf = b64encode(gen_pdf()).decode("utf-8")
     pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
-    #  st.markdown(pdf_display, unsafe_allow_html=True)
+    #st.markdown(pdf_display, unsafe_allow_html=True)
     
     
 
