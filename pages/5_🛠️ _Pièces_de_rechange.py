@@ -173,7 +173,7 @@ if uploaded_file2 and uploaded_file2:
 
     fig.write_image("images/fig_piece_3_2.jpeg")
 
-    st.write(df)
+    
     st.subheader("Chercher description des articles")
     # Demander à l'utilisateur d'entrer le code de l'article
     code = st.text_input("Entrez le code de l'article")
