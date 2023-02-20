@@ -8,7 +8,7 @@ import dataframe_image as dfi
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-st.set_page_config(page_title= 'demandes d’interventions (DI)', page_icon="👷‍♂️")
+st.set_page_config(page_title= 'demandes d’interventions (DI)', page_icon="./images/big_logo.png")
 st. title('suivi des demandes d’interventions (DI)')
 
 uploaded_file1 =st.file_uploader('fichier demandes d’interventions', type=['xlsx','xls','csv'])

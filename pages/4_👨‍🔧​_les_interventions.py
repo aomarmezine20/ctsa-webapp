@@ -11,7 +11,7 @@ import numpy as np
 
 
 
-st.set_page_config(page_title= 'les interventions)', page_icon="👨‍🔧")
+st.set_page_config(page_title= 'les interventions)', page_icon="./images/big_logo.png")
 st. title('les statistiques des interventions')
 
 uploaded_file1 =st.file_uploader('fichier des interventions', type=['xlsx','xls','csv'])

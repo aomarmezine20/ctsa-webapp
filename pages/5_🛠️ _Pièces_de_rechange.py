@@ -6,7 +6,7 @@ from base64 import b64encode
 from fpdf import FPDF
 
 
-st.set_page_config(page_title= 'suivi des Pièces de rechange', page_icon="🛠️")
+st.set_page_config(page_title= 'suivi des Pièces de rechange', page_icon="./images/big_logo.png")
 st. title('Suivi des Pièces de rechange')
 
 

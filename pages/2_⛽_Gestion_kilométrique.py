@@ -5,7 +5,7 @@ from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
 
-st.set_page_config(page_title= 'Gestion kilométrique', page_icon="⛽")
+st.set_page_config(page_title= 'Gestion kilométrique', page_icon="./images/big_logo.png")
 st. title('Gestion kilométrique')
 
 
