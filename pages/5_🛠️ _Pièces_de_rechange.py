@@ -41,7 +41,7 @@ if uploaded_file2 and uploaded_file2:
     st.write(df2)
     
     #make a new datafram contain spesefic elements that we want
-    df = df1[["Code de l'intervention",'MOVEMENTQUANTITY',"Code Article","Type OT"]].merge(df2[["Code de l'intervention",'Matériel']], 
+    df = df1[["Code de l'intervention",'MOVEMENTQUANTITY',"Code Article","Type OT","Description Article"]].merge(df2[["Code de l'intervention",'Matériel']], 
                                     on = "Code de l'intervention", 
                                     how = 'inner')
 
@@ -173,6 +173,24 @@ if uploaded_file2 and uploaded_file2:
 
     fig.write_image("images/fig_piece_3_2.jpeg")
 
+    st.write(df)
+    st.subheader("Chercher description des articles")
+    # Demander à l'utilisateur d'entrer le code de l'article
+    code = st.text_input("Entrez le code de l'article")
+
+    # Rechercher la description correspondante
+    result = df.loc[df['Code Article'] == code, 'Description Article']
+
+    # Afficher la description de l'article
+    if not result.empty:
+        st.write(f"Description de l'article : {result.iloc[0]}")
+    else:
+        st.write(f"Aucune description trouvée pour l'article '{code}'")
+    
+
+
+
+
 
 
     def footer(pdf):
@@ -185,6 +203,9 @@ if uploaded_file2 and uploaded_file2:
 
     def header(pdf):
         pdf.image('images/big_logo.png', 10, 8, 33)
+
+
+    
 
 #-------------------- Pdf ---------------------------------------------------------------------------------------------------
 

@@ -61,8 +61,7 @@ if uploaded_file2:
         #merge the two file into one file and make the calculation of km in months
     dfF1 = df1[['Code du point de mesure','Dernier relevé: Valeur mesurée']].merge(df2[['Code du point de mesure','Dernier relevé: Valeur mesurée']], 
                                     on = 'Code du point de mesure', 
-                                    how = 'right')
-                                    
+                                    how = 'left')
     dfF1['KM'] = dfF1["Dernier relevé: Valeur mesurée_y"] - dfF1["Dernier relevé: Valeur mesurée_x"]
     #drop result of T2
     dfF1 = dfF1.drop(labels=range(74, 124))
