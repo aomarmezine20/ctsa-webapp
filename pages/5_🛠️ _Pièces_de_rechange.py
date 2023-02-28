@@ -65,18 +65,41 @@ if uploaded_file2 and uploaded_file2:
 
     #split column of materiel to new columns contain just ud
     df['US'] = df['Matériel'].str.split('.').str[0]
+    #just the colum start with P.MR
+    df_starts_with_pm = df[df['Code Article'].str.startswith('P.MR')]
+
+    
     #change quantity of pdr to int
     df["MOVEMENTQUANTITY"] = df["MOVEMENTQUANTITY"].astype(int)
 
     #split the big datafram to two for each parc
     df_t1 = df[df['US'].isin(parc1())]
+    df_starts_with_pm_t1 =df_starts_with_pm[df_starts_with_pm['US'].isin(parc1())]
     df_t2 = df[df['US'].isin(parc2())]
+    df_starts_with_pm_t2 =df_starts_with_pm[df_starts_with_pm['US'].isin(parc2())]
     
-
+    
     #parc T1  ------------------------------------------------------------------------------------------------------------------------
     st.header('-----------------PARC T1------------------')
     #----- Top 20 piece ------------------------------------------------
-    st.subheader('Top 20 des pièces consommées parc T1: ')
+    st.subheader('Top 20 des pièces consommées parc T1 PMR: ')
+    df_starts_with_pm_t1qnt = df_starts_with_pm_t1[["Code Article", "MOVEMENTQUANTITY"]]
+    df_starts_with_pm_t1qnt = pd.pivot_table(df_starts_with_pm_t1qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+
+    #sort another time the list of us of every parc and show top 20 of every parc 
+    df_starts_with_pm_t1qnt = df_starts_with_pm_t1qnt.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_starts_with_pm_t1qnt = df_starts_with_pm_t1qnt.tail(20)
+    
+    #plot the result in bar chart
+    fig = px.bar(df_starts_with_pm_t1qnt,x="Code Article",y='MOVEMENTQUANTITY', text_auto='')
+
+    st.plotly_chart(fig)
+    #save it in image
+    fig.write_image("images/fig_piece_1_1.jpeg")
+
+    #-------- 
+    st.subheader('Top 20 des pièces consommées parc T1  : ')
+
     df_t1_qnt = df_t1[["Code Article", "MOVEMENTQUANTITY"]]
     df_t1_qnt = pd.pivot_table(df_t1_qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
 
@@ -90,6 +113,7 @@ if uploaded_file2 and uploaded_file2:
     st.plotly_chart(fig)
     #save it in image
     fig.write_image("images/fig_piece_1.jpeg")
+
 
     #----------- top 10 us consommablle of piece -------------------------------------
     st.subheader('Top 10 US à haute consommation de PDR parc T1: ')
@@ -128,6 +152,22 @@ if uploaded_file2 and uploaded_file2:
     #parc T2  ------------------------------------------------------------------------------------------------------------------------
     st.header('-----------------PARC T2------------------')
     #----- Top 20 piece ------------------------------------------------
+    st.subheader('Top 20 des pièces consommées parc T2 PMR: ')
+    df_starts_with_pm_t2qnt = df_starts_with_pm_t2[["Code Article", "MOVEMENTQUANTITY"]]
+    df_starts_with_pm_t2qnt = pd.pivot_table(df_starts_with_pm_t2qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+
+    #sort another time the list of us of every parc and show top 20 of every parc 
+    df_starts_with_pm_t2qnt = df_starts_with_pm_t2qnt.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_starts_with_pm_t2qnt = df_starts_with_pm_t2qnt.tail(20)
+    
+    #plot the result in bar chart
+    fig = px.bar(df_starts_with_pm_t2qnt,x="Code Article",y='MOVEMENTQUANTITY', text_auto='')
+
+    st.plotly_chart(fig)
+    #save it in image
+    fig.write_image("images/fig_piece_4_1.jpeg")
+
+
     st.subheader('Top 20 des pièces consommées parc T2: ')
     df_t2_qnt = df_t2[["Code Article", "MOVEMENTQUANTITY"]]
     df_t2_qnt = pd.pivot_table(df_t2_qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
@@ -141,7 +181,7 @@ if uploaded_file2 and uploaded_file2:
 
     st.plotly_chart(fig)
     #save it in image
-    fig.write_image("images/fig_piece_1_2.jpeg")
+    fig.write_image("images/fig_piece_4.jpeg")
 
     #----------- top 10 us consommablle of piece -------------------------------------
     st.subheader('Top 10 US à haute consommation de PDR parc T2: ')
@@ -156,7 +196,7 @@ if uploaded_file2 and uploaded_file2:
 
     st.plotly_chart(fig)
     #save it in image
-    fig.write_image("images/fig_piece_2_2.jpeg")
+    fig.write_image("images/fig_piece_5.jpeg")
     
     #------- repartition par type --------------------------------------------
     st.subheader('Répartition des sorties PDR en fonction des types OT parc T2: ')
@@ -171,7 +211,7 @@ if uploaded_file2 and uploaded_file2:
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
 
-    fig.write_image("images/fig_piece_3_2.jpeg")
+    fig.write_image("images/fig_piece_6.jpeg")
 
     
     st.subheader("Chercher description des articles")
@@ -237,7 +277,7 @@ if uploaded_file2 and uploaded_file2:
         pdf.image('images/fig_piece_1.jpeg', x=5, y=80, w=200,h=150)
 
         footer(pdf)
-        pdf.ln(200)
+        pdf.ln(400)
         pdf.set_font('Times', 'B', 25)
         
 
@@ -276,7 +316,7 @@ if uploaded_file2 and uploaded_file2:
         pdf.set_font('Times', '', 15)
         pdf.ln(15)
         pdf.cell(10)
-        pdf.image('images/fig_piece_1_2.jpeg', x=5, y=80, w=200,h=150)
+        pdf.image('images/fig_piece_4.jpeg', x=5, y=80, w=200,h=150)
 
         footer(pdf)
         pdf.ln(200)
@@ -289,7 +329,7 @@ if uploaded_file2 and uploaded_file2:
         pdf.set_font('Times', '', 15)
         pdf.ln(15)
         pdf.cell(10)
-        pdf.image('images/fig_piece_2_2.jpeg', x=5, y=60, w=200,h=150)
+        pdf.image('images/fig_piece_5.jpeg', x=5, y=60, w=200,h=150)
         footer(pdf)
 
 
@@ -301,8 +341,32 @@ if uploaded_file2 and uploaded_file2:
         pdf.ln(10)
         pdf.cell(60, 57, " OT parc T2:", 'C')
         header(pdf)
-        pdf.image('images/fig_piece_3_2.jpeg', x=5, y=65, w=200,h=150)
+        pdf.image('images/fig_piece_6.jpeg', x=5, y=65, w=200,h=150)
         footer(pdf)
+
+        pdf.ln(200)
+        pdf.set_font('Times', 'B', 25)
+        pdf.cell(60, 80, "Top 20 des pièces consommées parc T1  PMR:", 'C')
+        header(pdf)
+
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig_piece_1_1.jpeg', x=5, y=60, w=200,h=150)
+        footer(pdf)
+
+        pdf.ln(200)
+        pdf.set_font('Times', 'B', 25)
+        pdf.cell(60, 80, "Top 20 des pièces consommées parc T2 PMR:", 'C')
+        header(pdf)
+
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig_piece_4_1.jpeg', x=5, y=60, w=200,h=150)
+        footer(pdf)
+
+
 
 
         return pdf.output(dest='S').encode('latin-1')

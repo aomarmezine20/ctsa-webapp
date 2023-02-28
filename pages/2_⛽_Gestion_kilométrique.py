@@ -63,8 +63,26 @@ if uploaded_file2:
                                     on = 'Code du point de mesure', 
                                     how = 'left')
     dfF1['KM'] = dfF1["Dernier relevé: Valeur mesurée_y"] - dfF1["Dernier relevé: Valeur mesurée_x"]
+
+
+    def parc1() :
+        T=[]
+        for i in range (0,10):
+            T.append('PM-US00'+str(i))
+        for i in range(10,75):
+            T.append('PM-US0'+str(i))
+        return(T)
+    #creat list of parc T2
+    def parc2():
+        T=[]
+        for i in range(75,100):
+            T.append('PM-US0'+str(i))
+        for i in range(100,125):
+            T.append('PM-US'+str(i))
+        return(T)
     #drop result of T2
-    dfF1 = dfF1.drop(labels=range(74, 124))
+    
+    dfF1 = dfF1[~dfF1["Code du point de mesure"].isin(parc2())]
     
     dfsort =dfF1.sort_values(['KM'],ascending=[True])
     # ----PLOT DATAFRAME T1 -------
@@ -142,7 +160,7 @@ if uploaded_file2:
                                     
     dfF['KM'] = dfF["Dernier relevé: Valeur mesurée_y"] - dfF["Dernier relevé: Valeur mesurée_x"]
     #drop result of T1
-    dfF = dfF.drop(labels=range(0, 74))
+    dfF = dfF[~dfF["Code du point de mesure"].isin(parc1())]
     
 
     dfsort =dfF.sort_values(['KM'],ascending=[True])
