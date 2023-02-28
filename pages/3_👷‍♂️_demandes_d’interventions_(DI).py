@@ -123,7 +123,7 @@ if uploaded_file1 :
     
 
     #Top 5 emplacements des défaillances----------------------------------------------------------
-    st.header('Top 5 emplacements des défaillances')
+    st.header('Top 10 emplacements des défaillances')
     dfcount_emp =df['Point principal associé Description'].value_counts()
 
     dfcount_emp.to_frame()
