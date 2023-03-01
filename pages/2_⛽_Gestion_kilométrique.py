@@ -26,10 +26,10 @@ if uploaded_file1 :
     df1 = pd.read_excel(uploaded_file1)
 
     #drop row that have null values
-    df1=df1.dropna(how='any',axis=0,subset=['Dernier relevé: Valeur mesurée']) 
+    df1=df1.dropna(how='any',axis=0,subset=['Valeur mesurée']) 
 
     #make column of values km type int
-    df1['Dernier relevé: Valeur mesurée'] = df1['Dernier relevé: Valeur mesurée'].astype('int')
+    df1['Valeur mesurée'] = df1['Valeur mesurée'].astype('int')
     st.dataframe(df1)
 
 if uploaded_file2:
@@ -38,16 +38,16 @@ if uploaded_file2:
     #read file python
     df2 = pd.read_excel(uploaded_file2)
     df1 = pd.read_excel(uploaded_file1)
-    df1=df1.dropna(how='any',axis=0,subset=['Dernier relevé: Valeur mesurée']) 
+    df1=df1.dropna(how='any',axis=0,subset=['Valeur mesurée']) 
 
     #make column of values km type int
-    df1['Dernier relevé: Valeur mesurée'] = df1['Dernier relevé: Valeur mesurée'].astype('int')
+    df1['Valeur mesurée'] = df1['Valeur mesurée'].astype('int')
 
     #drop row that have null values
-    df2=df2.dropna(how='any',axis=0,subset=['Dernier relevé: Valeur mesurée'])
+    df2=df2.dropna(how='any',axis=0,subset=['Valeur mesurée'])
 
     #make column of values km type int
-    df2['Dernier relevé: Valeur mesurée'] = df2['Dernier relevé: Valeur mesurée'].astype('int')
+    df2['Valeur mesurée'] = df2['Valeur mesurée'].astype('int')
 
     #show data frame in table
     st.dataframe(df2)
@@ -59,10 +59,10 @@ if uploaded_file2:
     #catrgory box
     st.header('Le Kilométrage pour PARC T1')
         #merge the two file into one file and make the calculation of km in months
-    dfF1 = df1[['Code du point de mesure','Dernier relevé: Valeur mesurée']].merge(df2[['Code du point de mesure','Dernier relevé: Valeur mesurée']], 
-                                    on = 'Code du point de mesure', 
+    dfF1 = df1[['Point de mesure','Valeur mesurée']].merge(df2[['Point de mesure','Valeur mesurée']], 
+                                    on = 'Point de mesure', 
                                     how = 'left')
-    dfF1['KM'] = dfF1["Dernier relevé: Valeur mesurée_y"] - dfF1["Dernier relevé: Valeur mesurée_x"]
+    dfF1['KM'] = dfF1["Valeur mesurée_y"] - dfF1["Valeur mesurée_x"]
 
 
     def parc1() :
@@ -82,13 +82,13 @@ if uploaded_file2:
         return(T)
     #drop result of T2
     
-    dfF1 = dfF1[~dfF1["Code du point de mesure"].isin(parc2())]
+    dfF1 = dfF1[~dfF1["Point de mesure"].isin(parc2())]
     
     dfsort =dfF1.sort_values(['KM'],ascending=[True])
     # ----PLOT DATAFRAME T1 -------
     fig= px.bar(
     dfsort,
-    x='Code du point de mesure',
+    x='Point de mesure',
     y='KM',
     color='KM',
     color_continuous_scale=[' red' , 'yellow' , ' green' ],
@@ -116,13 +116,13 @@ if uploaded_file2:
 
 
     # ---T1--CUMMULE -------------------------------------------
-    dfF1['KM cumul']= dfF1['Dernier relevé: Valeur mesurée_y']
+    dfF1['KM cumul']= dfF1['Valeur mesurée_y']
     dfsort_cumul =dfF1.sort_values(['KM cumul'],ascending=[True])
 
     # ----PLOT DATAFRAME T1 cumul -------
     fig= px.bar(
     dfsort_cumul,
-    x='Code du point de mesure',
+    x='Point de mesure',
     y='KM cumul',
     color='KM cumul',
     color_continuous_scale=[' red' , 'yellow' , ' green' ],
@@ -154,13 +154,13 @@ if uploaded_file2:
     #RESULT FOR PARC T2
     st.header('Le Kilométrage pour PARC T2')
     #merge the two file into one file and make the calculation of km in months
-    dfF = df1[['Code du point de mesure','Dernier relevé: Valeur mesurée']].merge(df2[['Code du point de mesure','Dernier relevé: Valeur mesurée']], 
-                                    on = 'Code du point de mesure', 
+    dfF = df1[['Point de mesure','Valeur mesurée']].merge(df2[['Point de mesure','Valeur mesurée']], 
+                                    on = 'Point de mesure', 
                                     how = 'right')
                                     
-    dfF['KM'] = dfF["Dernier relevé: Valeur mesurée_y"] - dfF["Dernier relevé: Valeur mesurée_x"]
+    dfF['KM'] = dfF["Valeur mesurée_y"] - dfF["Valeur mesurée_x"]
     #drop result of T1
-    dfF = dfF[~dfF["Code du point de mesure"].isin(parc1())]
+    dfF = dfF[~dfF["Point de mesure"].isin(parc1())]
     
 
     dfsort =dfF.sort_values(['KM'],ascending=[True])
@@ -168,7 +168,7 @@ if uploaded_file2:
         # ---PLOT DATAFRAME-- T2--------
     fig= px.bar(
     dfsort,
-    x='Code du point de mesure',
+    x='Point de mesure',
     y='KM',
     color='KM',
     color_continuous_scale=[' red' , 'yellow' , ' green' ],
@@ -197,14 +197,14 @@ if uploaded_file2:
 
 
     # ---T2--CUMMULE -------------------------------------------
-    dfF['KM cumul']= dfF['Dernier relevé: Valeur mesurée_y']
+    dfF['KM cumul']= dfF['Valeur mesurée_y']
     dfsort_cumul =dfF.sort_values(['KM cumul'],ascending=[True])
 
     
     # ----PLOT DATAFRAME T2 cumul -------
     fig= px.bar(
     dfsort_cumul,
-    x='Code du point de mesure',
+    x='Point de mesure',
     y='KM cumul',
     color='KM cumul',
     color_continuous_scale=[' red' , 'yellow' , ' green' ],
