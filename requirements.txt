@@ -11,3 +11,4 @@ webdriver-manager==3.8.5
 selenium==4.6.0
 matplotlib==3.6.2
 streamlit-option-menu==0.3.2
+streamlit-extras==0.2.6
