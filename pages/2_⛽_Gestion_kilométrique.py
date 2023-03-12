@@ -9,6 +9,17 @@ st.set_page_config(page_title= 'Gestion kilométrique', page_icon="./images/big_
 st. title('Gestion kilométrique')
 
 
+
+
+
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 #upload file1 xls
 
 uploaded_file1 =st.file_uploader('Le Kilométrage pour le premiere mois', type=['xlsx','xls','csv'])
@@ -17,6 +28,33 @@ uploaded_file1 =st.file_uploader('Le Kilométrage pour le premiere mois', type=[
 #upload file2 xls
 uploaded_file2 =st.file_uploader('Le Kilométrage pour le deuxieme mois', type=['xlsx','xls','csv'])
 
+#---- remove list pagees
+st.markdown("<style> ul {display: none;} </style>", unsafe_allow_html=True)
+#-------  MENUUUU -----------------
+import streamlit as st
+from streamlit_option_menu import option_menu
+from streamlit_extras.switch_page_button import switch_page
+with st.sidebar:
+    selected = option_menu("Reporting Tram", ["Home","Gestion kilométrique", "Demandes d’interventions (DI)","les interventions","Pièces de rechange"], 
+        icons=["bi-house-door","bi-graph-up-arrow", "bi-clipboard-check","bi-wrench", "gear"], menu_icon="bi-arrow-right-square", default_index=1)
+ 
+   
+if selected == "Home" :
+    switch_page("HOME")
+
+if selected == "Demandes d’interventions (DI)" :
+    switch_page("demandes d’interventions (di)")
+
+if selected == "les interventions" :
+   switch_page("\u200b les interventions")
+
+elif selected == "Pièces de rechange" :
+    switch_page("\u200a pièces de rechange")
+
+
+with st.sidebar:
+    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+        icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
 
 
 if uploaded_file1 :

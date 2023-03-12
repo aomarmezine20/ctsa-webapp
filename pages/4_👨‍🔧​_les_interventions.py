@@ -16,6 +16,42 @@ st. title('les statistiques des interventions')
 
 uploaded_file1 =st.file_uploader('fichier des interventions', type=['xlsx','xls','csv'])
 
+#-------------------- hide footer --------------
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+#---- remove list pages 
+st.markdown("<style> ul {display: none;} </style>", unsafe_allow_html=True)
+#-------  MENUUUU -----------------
+import streamlit as st
+from streamlit_option_menu import option_menu
+from streamlit_extras.switch_page_button import switch_page
+with st.sidebar:
+    selected = option_menu("Reporting Tram", ["Home","Gestion kilométrique", "Demandes d’interventions (DI)","les interventions","Pièces de rechange"], 
+        icons=["bi-house-door","bi-graph-up-arrow", "bi-clipboard-check","bi-wrench", "gear"], menu_icon="bi-arrow-right-square", default_index=3)
+ 
+   
+if selected == "Gestion kilométrique" :
+   switch_page("gestion kilométrique")
+
+if selected == "Demandes d’interventions (DI)" :
+    switch_page("demandes d’interventions (di)")
+
+if selected == "Home" :
+    switch_page("HOME")
+
+elif selected == "Pièces de rechange" :
+    switch_page("\u200a pièces de rechange")
+
+
+with st.sidebar:
+    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+        icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
 
 if uploaded_file1 :
     st.markdown('---')

@@ -5,8 +5,6 @@ from PIL import Image
 from streamlit_option_menu import option_menu
 
 
-
-
 st.set_page_config(page_title= 'Ctsa Web app', page_icon="./images/big_logo.png",menu_items={})
 st. title('Welcome')
 #------------- hide footer 
@@ -52,7 +50,7 @@ with st.sidebar:
     selected = option_menu("Reporting Tram", ["Home","Gestion kilométrique", "Demandes d’interventions (DI)","les interventions","Pièces de rechange"], 
         icons=["bi-house-door","bi-graph-up-arrow", "bi-clipboard-check","bi-wrench", "gear"], menu_icon="bi-arrow-right-square", default_index=0)
  
-   
+
 if selected == "Gestion kilométrique" :
    switch_page("gestion kilométrique")
 
@@ -64,7 +62,6 @@ if selected == "les interventions" :
 
 elif selected == "Pièces de rechange" :
     switch_page("\u200a pièces de rechange")
-
 
 with st.sidebar:
     selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 

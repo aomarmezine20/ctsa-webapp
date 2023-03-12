@@ -8,6 +8,42 @@ from fpdf import FPDF
 
 st.set_page_config(page_title= 'suivi des Pièces de rechange', page_icon="./images/big_logo.png")
 st. title('Suivi des Pièces de rechange')
+#------------- hide footer 
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+#----- remove list pages
+st.markdown("<style> ul {display: none;} </style>", unsafe_allow_html=True)
+#-------  MENUUUU -----------------
+import streamlit as st
+from streamlit_option_menu import option_menu
+from streamlit_extras.switch_page_button import switch_page
+with st.sidebar:
+    selected = option_menu("Reporting Tram", ["Home","Gestion kilométrique", "Demandes d’interventions (DI)","les interventions","Pièces de rechange"], 
+        icons=["bi-house-door","bi-graph-up-arrow", "bi-clipboard-check","bi-wrench", "gear"], menu_icon="bi-arrow-right-square", default_index=4)
+ 
+   
+if selected == "Gestion kilométrique" :
+   switch_page("gestion kilométrique")
+
+if selected == "Demandes d’interventions (DI)" :
+    switch_page("demandes d’interventions (di)")
+
+if selected == "les interventions" :
+   switch_page("\u200b les interventions")
+
+if selected == "Home" :
+    switch_page("HOME")
+
+with st.sidebar:
+    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+        icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
+
 
 
 #upload file1 xls
