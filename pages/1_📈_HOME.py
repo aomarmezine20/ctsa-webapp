@@ -64,5 +64,7 @@ elif selected == "Pièces de rechange" :
     switch_page("\u200a pièces de rechange")
 
 with st.sidebar:
-    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+    selected = option_menu("Reporting Bus", ["Reporting bus", 'Rapport 2'], 
         icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
+if selected == "Reporting bus" :
+    switch_page("Reporting_bus")

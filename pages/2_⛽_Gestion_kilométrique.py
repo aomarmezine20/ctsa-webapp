@@ -22,11 +22,11 @@ hide_st_style = """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 #upload file1 xls
 
-uploaded_file1 =st.file_uploader('Le Kilométrage pour le premiere mois', type=['xlsx','xls','csv'])
+uploaded_file1 =st.file_uploader('Le Kilométrage du début de mois', type=['xlsx','xls','csv'])
 
 
 #upload file2 xls
-uploaded_file2 =st.file_uploader('Le Kilométrage pour le deuxieme mois', type=['xlsx','xls','csv'])
+uploaded_file2 =st.file_uploader('Le Kilométrage à la fin du mois', type=['xlsx','xls','csv'])
 
 #---- remove list pagees
 st.markdown("<style> ul {display: none;} </style>", unsafe_allow_html=True)
@@ -53,8 +53,10 @@ elif selected == "Pièces de rechange" :
 
 
 with st.sidebar:
-    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+    selected = option_menu("Reporting Bus", ["Répartition des OT", 'Rapport 2'], 
         icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
+if selected == "Répartition des OT" :
+    switch_page("Reporting_bus")
 
 
 if uploaded_file1 :

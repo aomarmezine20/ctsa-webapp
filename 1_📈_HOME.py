@@ -67,5 +67,7 @@ elif selected == "Pièces de rechange" :
 
 
 with st.sidebar:
-    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+    selected = option_menu("Reporting Bus", ["Répartition des OT", 'Rapport 2'], 
         icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
+if selected == "Répartition des OT" :
+    switch_page("Reporting_bus")

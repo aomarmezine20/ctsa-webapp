@@ -47,8 +47,10 @@ elif selected == "Pièces de rechange" :
 
 
 with st.sidebar:
-    selected = option_menu("Reporting Bus", ["Rapport 1", 'Rapport 2'], 
+    selected = option_menu("Reporting Bus", ["Répartition des OT", 'Rapport 2'], 
         icons=['house', 'gear'], menu_icon="bi-arrow-right-square", default_index=1)
+if selected == "Répartition des OT" :
+    switch_page("Reporting_bus")
 
 
 if uploaded_file1 :
@@ -249,7 +251,7 @@ if uploaded_file1 :
         footer(pdf)
         pdf.ln(250)
         pdf.set_font('Times', 'B', 20)
-        pdf.cell(60, 20, 'Top 5 emplacements des défaillances :', 'C')
+        pdf.cell(60, 20, 'Top 10 emplacements des défaillances :', 'C')
         pdf.image('images/table_emp.png', x=0, y=30, w=206,h=150) 
         footer(pdf)
         
