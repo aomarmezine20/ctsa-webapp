@@ -24,6 +24,7 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 #upload file1 xls
 
 uploaded_file1 =st.file_uploader("Fichier D'extraction", type=['xlsx','xls','csv'])
+uploaded_file2 =st.file_uploader("Fichier D'extraction PDR", type=['xlsx','xls','csv'])
 
 
 #---- remove list pagees
@@ -61,12 +62,27 @@ if uploaded_file1 :
     st.subheader("Reporting Bus" )
     df1 = pd.read_excel(uploaded_file1,engine='openpyxl')
     st.write(df1)
+    st.subheader("Reporting Bus PDR" )
+    df2 = pd.read_excel(uploaded_file2,engine='openpyxl')
+    st.write(df2)
+
 
     st.header('------------------Dépôt Bernoussi------------------')
     
 
     #----creat DATAFRAME FOR JUST BERNOSSI DEPOT -----------------
     df_BER = df1[df1['Intervention'].str.startswith('BER')]
+    df_BER = df_BER.sort_values(by='Actif')
+    
+    # select the rows that meet the condition
+    df_BER['Actif'] = pd.to_numeric(df_BER['Actif'], errors='coerce').astype('Int64')
+    df_BER = df_BER.dropna(subset=['Actif'])
+    
+    df_BER = df_BER.drop(df_BER[(df_BER['Actif'] < 32836) | (df_BER['Actif'] > 33535)].index)
+    
+    
+    
+    
     
     #----sum the cout totale effective pour chaque type -----------------
     df_BER_sort = pd.pivot_table(df_BER, index=["Type de réparation"],values=['Coût total effectif'],aggfunc='sum').reset_index()
@@ -86,10 +102,16 @@ if uploaded_file1 :
     df_1 = pd.merge(pd.merge(df_BER_sort, value_counts,on='Type de réparation'),df_type, on="Type de réparation")
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
+
+
+
+    #remove type rien in Description 
+    df_1 = df_1.drop(df_1[df_1["Description"] == "rien" ].index)
     
     #-------sort the the maine dataframe in two dataframe every dataframe sorted in defirent way -------------------
     df_s1 =df_1.sort_values(['Coût total effectif'],ascending=[True])
     df_s2 =df_1.sort_values(['nombre OT'],ascending=[True])
+
 
     #--------- plot the two sorted dataframe one for cout totale effectif and the other for nombre Ot-----
     fig1 = px.bar(df_s1 ,x="Description",y="Coût total effectif",color="Coût total effectif",text="Coût total effectif",labels={'Description':'Type de réparation','value':'Coût total effectif'},height=500,width=900)
@@ -109,6 +131,14 @@ if uploaded_file1 :
 
     #----creat DATAFRAME FOR JUST BERNOSSI DEPOT -----------------
     df_BEN = df1[df1['Intervention'].str.startswith('BEN')]
+
+    df_BEN = df_BEN.sort_values(by='Actif')
+    
+    # select the rows that meet the condition
+    df_BEN['Actif'] = pd.to_numeric(df_BEN['Actif'], errors='coerce').astype('Int64')
+    df_BEN = df_BEN.dropna(subset=['Actif'])
+    
+    df_BEN = df_BEN.drop(df_BEN[(df_BEN['Actif'] < 32836) | (df_BEN['Actif'] > 33535)].index)
     
     #----sum the cout totale effective pour chaque type -----------------
     df_BEN_sort = pd.pivot_table(df_BEN, index=["Type de réparation"],values=['Coût total effectif'],aggfunc='sum').reset_index().astype(int)
@@ -128,6 +158,9 @@ if uploaded_file1 :
     df_1 = pd.merge(pd.merge(df_BEN_sort, value_counts,on='Type de réparation'),df_type, on="Type de réparation")
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
+
+    #remove type rien in Description 
+    df_1 = df_1.drop(df_1[df_1["Description"] == "rien" ].index)
     
     #-------sort the the maine dataframe in two dataframe every dataframe sorted in defirent way -------------------
     df_s1 =df_1.sort_values(['Coût total effectif'],ascending=[True])
@@ -155,6 +188,15 @@ if uploaded_file1 :
 
     #----creat DATAFRAME FOR JUST BERNOSSI DEPOT -----------------
     df_MAA = df1[df1['Intervention'].str.startswith('MAA')]
+
+
+    df_MAA = df_MAA.sort_values(by='Actif')
+    
+    # select the rows that meet the condition
+    df_MAA['Actif'] = pd.to_numeric(df_MAA['Actif'], errors='coerce').astype('Int64')
+    df_MAA = df_MAA.dropna(subset=['Actif'])
+    
+    df_MAA = df_MAA.drop(df_MAA[(df_MAA['Actif'] < 32836) | (df_MAA['Actif'] > 33535)].index)
     
     #----sum the cout totale effective pour chaque type -----------------
     df_MAA_sort = pd.pivot_table(df_MAA, index=["Type de réparation"],values=['Coût total effectif'],aggfunc='sum').reset_index().astype(int)
@@ -174,6 +216,11 @@ if uploaded_file1 :
     df_1 = pd.merge(pd.merge(df_MAA_sort, value_counts,on='Type de réparation'),df_type, on="Type de réparation")
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
+
+
+
+    #remove type rien in Description 
+    df_1 = df_1.drop(df_1[df_1["Description"] == "rien" ].index)
     
     #-------sort the the maine dataframe in two dataframe every dataframe sorted in defirent way -------------------
     df_s1 =df_1.sort_values(['Coût total effectif'],ascending=[True])
@@ -203,6 +250,15 @@ if uploaded_file1 :
 
     #----creat DATAFRAME FOR JUST BERNOSSI DEPOT -----------------
     df_MED = df1[df1['Intervention'].str.startswith('MAA')]
+
+
+    df_MED = df_MED.sort_values(by='Actif')
+    
+    # select the rows that meet the condition
+    df_MED['Actif'] = pd.to_numeric(df_MED['Actif'], errors='coerce').astype('Int64')
+    df_MED = df_MED.dropna(subset=['Actif'])
+    
+    df_MED = df_MED.drop(df_MED[(df_MED['Actif'] < 32836) | (df_MED['Actif'] > 33535)].index)
     
     #----sum the cout totale effective pour chaque type -----------------
     df_MED_sort = pd.pivot_table(df_MED, index=["Type de réparation"],values=['Coût total effectif'],aggfunc='sum').reset_index().astype(int)
@@ -222,6 +278,10 @@ if uploaded_file1 :
     df_1 = pd.merge(pd.merge(df_MED_sort, value_counts,on='Type de réparation'),df_type, on="Type de réparation")
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
+
+
+    #remove type rien in Description 
+    df_1 = df_1.drop(df_1[df_1["Description"] == "rien" ].index)
     
     #-------sort the the maine dataframe in two dataframe every dataframe sorted in defirent way -------------------
     df_s1 =df_1.sort_values(['Coût total effectif'],ascending=[True])
@@ -240,17 +300,28 @@ if uploaded_file1 :
     st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]), 2))+"**DH")
     
 
-
+    # type intervention --------------------------------------------------------------------------------------
     st.header('Types des Interventions de Maintenance :')
     st.write("La répartition des OT par types de maintenance est comme se suit :")
 
+    df1 = df1.sort_values(by='Actif')
+    
+    # select the rows that meet the condition
+    df1['Actif'] = pd.to_numeric(df1['Actif'], errors='coerce').astype('Int64')
+    df1 = df1.dropna(subset=['Actif'])
+    
+    df1 = df1.drop(df1[(df1['Actif'] < 32836) | (df1['Actif'] > 33535)].index)
+
+
     value_counts = df1["Type de travail"].value_counts().reset_index()
+    
+    
 
     fig = px.pie(value_counts, names= "index" ,values='Type de travail' ,color="Type de travail")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
 
-
+    #intervention preventives -----------------------------------------------------------------------------------
     st.subheader('a. Interventions préventives :')
 
     value_counts = df1["Description"].value_counts().reset_index()
@@ -265,3 +336,37 @@ if uploaded_file1 :
     fig2 = px.bar(df_type ,x="type",y="Nombre",color="Nombre",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Nombre",labels={'Description':'Type de réparation','value':'nombre OT'},height=400,width=700,title="VISITES PREVENTIVES")
 
     st.write(fig2)
+
+# PDR -------------------------------------------------------------------------------------------------
+
+    df2 = df2.sort_values(by='Actif')
+    
+    # select the rows that meet the condition
+    df2['Actif'] = pd.to_numeric(df2['Actif'], errors='coerce').astype('Int64')
+    df2 = df2.dropna(subset=['Actif'])
+    
+    df2 = df2.drop(df2[(df2['Actif'] < 32836) | (df2['Actif'] > 33535)].index)
+
+    #--------------------------------------------------------------------------------------------
+
+    df_PDR_sort = pd.pivot_table(df2, index=["Actif"],values=['Coût ligne'],aggfunc='sum').reset_index().astype(int)
+    df_PDR_sort = df_PDR_sort.sort_values(by='Coût ligne',ascending=True)
+    
+    df_PDR_sort = df_PDR_sort.tail(10)
+    df_PDR_sort["Actif"]=df_PDR_sort["Actif"].values.astype(str)
+    # -------------------------------------------------------------------------------------
+    st.subheader('Top 10 des dépenses par bus :')
+    fig2 = px.bar(df_PDR_sort ,x="Actif",y="Coût ligne",color="Coût ligne",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Coût ligne",labels={'Description':'Type de réparation','value':'nombre OT'},title="Top 10 des dépenses par bus :")
+    st.write(fig2)
+
+    #------------------------------------------------------------------------------------------------
+    st.subheader('Top 10 des PDR par coût :')
+    
+    df_Cout_sort = pd.pivot_table(df2, index=["Article","Description"],values=['Coût ligne',"Quantité"],aggfunc='sum').reset_index()
+    
+    df_Cout_sort = df_Cout_sort.sort_values(by='Coût ligne',ascending=True)
+    df_Cout_sort = df_Cout_sort.tail(10)
+    df_Cout_sort = df_Cout_sort.sort_values(by='Coût ligne',ascending=False)
+    df_Cout_sort["Quantité"]=df_Cout_sort["Quantité"].values.astype(int)
+    st.table(df_Cout_sort)
+    
