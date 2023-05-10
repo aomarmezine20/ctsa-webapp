@@ -4,7 +4,6 @@ import plotly.express as px # pip install plotly-express
 from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
-import altair as alt
 
 st.set_page_config(page_title= 'Répartition des OT et des coûts par dépôt :', page_icon="./images/big_logo.png")
 st. title('Répartition des OT et des coûts par dépôt :')
