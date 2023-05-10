@@ -79,7 +79,8 @@ if uploaded_file1 :
     st.header('Les Top 10 des US sur lesquelles on a plus de de DI')
 
     #split the column of Matériel du signalement to 4 column one of them is US 
-    df[['DI','autre','autre2','autre3']] = df['Matériel du signalement'].str.split(".",expand=True)
+    df["DI"]=df['Matériel du signalement'].str.split('.').str[0]
+    
     #sort the result
     dfsrt = df.sort_values(['DI'])
 
