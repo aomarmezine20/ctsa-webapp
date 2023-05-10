@@ -352,10 +352,12 @@ if uploaded_file1 :
     df_PDR_sort = df_PDR_sort.sort_values(by='Coût ligne',ascending=True)
     
     df_PDR_sort = df_PDR_sort.tail(10)
+
+  
     df_PDR_sort["Actif"]=df_PDR_sort["Actif"].astype(str)
     # -------------------------------------------------------------------------------------
     st.subheader('Top 10 des dépenses par bus :')
-    fig2 = px.bar(df_PDR_sort ,x="Actif",y="Coût ligne",color="Coût ligne",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Coût ligne",labels={'Description':'Type de réparation','value':'nombre OT'},title="Top 10 des dépenses par bus :")
+    fig2 = px.bar(df_PDR_sort ,x=df_PDR_sort["Actif"].astype(str),y="Coût ligne",color="Coût ligne",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Coût ligne",labels={'Description':'Type de réparation','value':'nombre OT'},title="Top 10 des dépenses par bus :")
     st.write(fig2)
 
     #------------------------------------------------------------------------------------------------
