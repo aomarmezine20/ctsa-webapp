@@ -1,7 +1,7 @@
 pandas==1.5.1
 Pillow==9.3.0
 plotly==5.11.0
-streamlit==1.14.0
+streamlit==1.17.0
 xlrd==2.0.1
 openpyxl==3.0.10
 fpdf==1.7.2
