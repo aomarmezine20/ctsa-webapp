@@ -87,8 +87,9 @@ if uploaded_file1 :
     df_t2 = df[df['US'].isin(parc2())]
 #-----------------PARC T1 --------------------------------------------------------------------------------------------------------------------------
     st.header('-----------------PARC T1------------------')
-    st.subheader('Le nombre total d’ordre de travaux')
-    st.markdown('  * le nombre des interventions du mois est **'+str(df_t1["Code de l'intervention"].count())+'** ')
+    st.subheader("Le nombre total d'ordre de travaux")
+    
+    st.write('  * le nombre des interventions du mois est **'+str(df_t1["Code de l'intervention"].count())+'** ')
     st.subheader('La répartition des interventions de maintenance par type :')
     #plot etat of interventions pie chart 
     fig = px.pie(df_t1, names="Nature d'intervention",color="Nature d'intervention")
