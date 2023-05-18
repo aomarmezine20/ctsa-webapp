@@ -101,7 +101,8 @@ if uploaded_file1 :
     df_type = pd.DataFrame(data, columns=['Type de réparation', 'Description'])
     # -----------merge three dataframe in one dataframe -----------------------------------------------
     
-    df_1 = pd.merge(pd.merge(df_BER_sort, value_counts,on='Type de réparation'),df_type, on="Type de réparation")
+    df_1 = pd.merge(df_BER_sort, value_counts,on='Type de réparation')
+    df_1 = pd.merge(df_1,df_type, on="Type de réparation" )
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
 
