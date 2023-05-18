@@ -14,3 +14,4 @@ streamlit-option-menu==0.3.2
 streamlit-extras==0.2.6
 altair==4.2.0
 tabulate==0.9.0
+pip ==23.1.2
