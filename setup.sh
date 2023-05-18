@@ -9,7 +9,5 @@ echo "\
 [server]\n\
 headless = true\n\
 enableCORS=false\n\
-port = $PORT\n\
-STREAMLIT_SERVER_ADDRESS=0.0.0.0\
-STREAMLIT_SERVER_PORT=10000
+port = $PORT\
 " > ~/.streamlit/config.toml
