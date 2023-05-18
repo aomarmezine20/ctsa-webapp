@@ -4,6 +4,8 @@ import plotly.express as px # pip install plotly-express
 from PIL import Image
 from base64 import b64encode
 from fpdf import FPDF
+from tabulate import tabulate
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title= 'Répartition des OT et des coûts par dépôt :', page_icon="./images/big_logo.png")
 st. title('Répartition des OT et des coûts par dépôt :')
@@ -79,7 +81,7 @@ if uploaded_file1 :
     
     df_BER = df_BER.drop(df_BER[(df_BER['Actif'] < 32836) | (df_BER['Actif'] > 33535)].index)
     
-    
+    df_BER["Coût total effectif"]= df_BER["Coût total effectif"].astype(int)
     
     
     
@@ -90,6 +92,7 @@ if uploaded_file1 :
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
     value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    v1 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
     data = data = [[1, "Maintenance"], [2, "Grandes réparations"], [3, "Accidents fautif"],[4, "Accidents sans faute"],[5, "Reformes"],[8, "Garanties"]
@@ -115,15 +118,16 @@ if uploaded_file1 :
     #--------- plot the two sorted dataframe one for cout totale effectif and the other for nombre Ot-----
     fig1 = px.bar(df_s1 ,x="Description",y="Coût total effectif",color="Coût total effectif",text="Coût total effectif",labels={'Description':'Type de réparation','value':'Coût total effectif'},height=500,width=900)
     st.write(fig1)
+    fig1.write_image("images/fig1_bus_BR.jpeg")
     st.write(" la répartition par type d'intervention et nombre d'OT sur le dépôt de Bernoussi est comme se suit:")
 
     fig2 = px.bar(df_s2 ,x="Description",y="nombre OT",color="nombre OT",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="nombre OT",labels={'Description':'Type de réparation','value':'nombre OT'},height=500,width=900)
-
+    fig2.write_image("images/fig2_bus_BR.jpeg")
     #--------show the figures ---------------------------
     
     st.write(fig2)
-    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]), 2))+"**DH")
-
+    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))+"**DH (Coût garanties exclu)")
+    v11=str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))
     #--------------------------------------------------------------------------------------
     st.header('------------------Dépôt BENMSIK------------------')
     
@@ -146,6 +150,7 @@ if uploaded_file1 :
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
     value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    v2 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de BENMSIK est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
     data = data = [[1, "Maintenance"], [2, "Grandes réparations"], [3, "Accidents fautif"],[4, "Accidents sans faute"],[5, "Reformes"],[8, "Garanties"]
@@ -168,6 +173,7 @@ if uploaded_file1 :
     #--------- plot the two sorted dataframe one for cout totale effectif and the other for nombre Ot-----
     fig1 = px.bar(df_s1 ,x="Description",y="Coût total effectif",color="Coût total effectif",text="Coût total effectif",labels={'Description':'Type de réparation','value':'Coût total effectif'},height=500,width=900)
     st.write(fig1)
+    fig1.write_image("images/fig1_bus_BN.jpeg")
     st.write(" la répartition par type d'intervention et nombre d'OT sur le dépôt de Bernoussi est comme se suit:")
 
     fig2 = px.bar(df_s2 ,x="Description",y="nombre OT",color="nombre OT",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="nombre OT",labels={'Description':'Type de réparation','value':'nombre OT'},height=500,width=900)
@@ -175,10 +181,10 @@ if uploaded_file1 :
     #--------show the figures ---------------------------
     
     st.write(fig2)
-    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]), 2))+"**DH")
+    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))+"**DH (Coût garanties exclu)")
+    v22=str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))
 
-
-
+    fig2.write_image("images/fig2_bus_BN.jpeg")
 
 
     #--------------------------------------------------------------------------------------
@@ -204,6 +210,7 @@ if uploaded_file1 :
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
     value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    v3= str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de MAARIF est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
     data = data = [[1, "Maintenance"], [2, "Grandes réparations"], [3, "Accidents fautif"],[4, "Accidents sans faute"],[5, "Reformes"],[8, "Garanties"]
@@ -228,6 +235,7 @@ if uploaded_file1 :
     #--------- plot the two sorted dataframe one for cout totale effectif and the other for nombre Ot-----
     fig1 = px.bar(df_s1 ,x="Description",y="Coût total effectif",color="Coût total effectif",text="Coût total effectif",labels={'Description':'Type de réparation','value':'Coût total effectif'},height=500,width=900)
     st.write(fig1)
+    fig1.write_image("images/fig1_bus_MA.jpeg")
     st.write(" la répartition par type d'intervention et nombre d'OT sur le dépôt de Bernoussi est comme se suit:")
 
     fig2 = px.bar(df_s2 ,x="Description",y="nombre OT",color="nombre OT",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="nombre OT",labels={'Description':'Type de réparation','value':'nombre OT'},height=500,width=900)
@@ -235,9 +243,9 @@ if uploaded_file1 :
     #--------show the figures ---------------------------
     
     st.write(fig2)
-    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]), 2))+"**DH")
-    
-
+    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))+"**DH (Coût garanties exclu)")
+    fig2.write_image("images/fig2_bus_MA.jpeg")
+    v33 =str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))
 
 
 
@@ -266,6 +274,7 @@ if uploaded_file1 :
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
     value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    v4 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de MEDIOUNA est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
     data = data = [[1, "Maintenance"], [2, "Grandes réparations"], [3, "Accidents fautif"],[4, "Accidents sans faute"],[5, "Reformes"],[8, "Garanties"]
@@ -289,6 +298,7 @@ if uploaded_file1 :
     #--------- plot the two sorted dataframe one for cout totale effectif and the other for nombre Ot-----
     fig1 = px.bar(df_s1 ,x="Description",y="Coût total effectif",color="Coût total effectif",text="Coût total effectif",labels={'Description':'Type de réparation','value':'Coût total effectif'},height=500,width=900)
     st.write(fig1)
+    fig1.write_image("images/fig1_bus_MD.jpeg")
     st.write(" la répartition par type d'intervention et nombre d'OT sur le dépôt de Bernoussi est comme se suit:")
 
     fig2 = px.bar(df_s2 ,x="Description",y="nombre OT",color="nombre OT",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="nombre OT",labels={'Description':'Type de réparation','value':'nombre OT'},height=500,width=900)
@@ -296,8 +306,9 @@ if uploaded_file1 :
     #--------show the figures ---------------------------
     
     st.write(fig2)
-    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]), 2))+"**DH")
-    
+    st.write("Le total des dépenses en matière de main d’œuvre et de PDR sorties est de **"+str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))+"**DH (Coût garanties exclu)")
+    v44 =str(round(sum(df_s1["Coût total effectif"]) - df_s1.loc[df_s1['Description'].str.contains('Garanties'), 'Coût total effectif'].sum(), 2))
+    fig2.write_image("images/fig2_bus_MD.jpeg")
 
     # type intervention --------------------------------------------------------------------------------------
     st.header('Types des Interventions de Maintenance :')
@@ -313,12 +324,15 @@ if uploaded_file1 :
 
 
     value_counts = df1["Type de travail"].value_counts().reset_index()
-    
+    value_counts = value_counts.drop(value_counts[value_counts['index'] == 'GASTO'].index).reset_index(drop=True)
+
+    #value_counts1 = value_counts[value_counts['Type de travail'] != 'GASTO'].reset_index(drop=True)
     
 
     fig = px.pie(value_counts, names= "index" ,values='Type de travail' ,color="Type de travail")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
+    fig.write_image("images/fig_intrv.jpeg")
 
     #intervention preventives -----------------------------------------------------------------------------------
     st.subheader('a. Interventions préventives :')
@@ -333,32 +347,32 @@ if uploaded_file1 :
     
     df_type = pd.DataFrame(data, columns=['type', 'Nombre'])
     fig2 = px.bar(df_type ,x="type",y="Nombre",color="Nombre",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Nombre",labels={'Description':'Type de réparation','value':'nombre OT'},height=400,width=700,title="VISITES PREVENTIVES")
-
+    fig2.write_image("images/fig_intrv_prv.jpeg")
     st.write(fig2)
 
 # PDR -------------------------------------------------------------------------------------------------
 
-    df2 = df2.sort_values(by='Actif')
+    df1 = df1.sort_values(by='Actif')
     
     # select the rows that meet the condition
-    df2['Actif'] = pd.to_numeric(df2['Actif'], errors='coerce').astype('Int64')
-    df2 = df2.dropna(subset=['Actif'])
+    df1['Actif'] = pd.to_numeric(df1['Actif'], errors='coerce').astype('Int64')
+    df1 = df1.dropna(subset=['Actif'])
     
-    df2 = df2.drop(df2[(df2['Actif'] < 32836) | (df2['Actif'] > 33535)].index)
+    df1 = df1.drop(df1[(df1['Actif'] < 32836) | (df1['Actif'] > 33535)].index)
 
     #--------------------------------------------------------------------------------------------
-
-    df_PDR_sort = pd.pivot_table(df2, index=["Actif"],values=['Coût ligne'],aggfunc='sum').reset_index().astype(int)
-    df_PDR_sort = df_PDR_sort.sort_values(by='Coût ligne',ascending=True)
+    df_PDR_sort = pd.pivot_table(df1, index=["Actif"],values=['Coût total effectif'],aggfunc='sum').reset_index().astype(int)
+    df_PDR_sort = df_PDR_sort.sort_values(by='Coût total effectif',ascending=True)
     
     df_PDR_sort = df_PDR_sort.tail(10)
-
+    
   
     df_PDR_sort["Actif"]=df_PDR_sort["Actif"].astype(str)
     # -------------------------------------------------------------------------------------
     st.subheader('Top 10 des dépenses par bus :')
-    fig2 = px.bar(df_PDR_sort ,x="Actif",y="Coût ligne",color="Coût ligne",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Coût ligne",labels={'Description':'Type de réparation','value':'nombre OT'},title="Top 10 des dépenses par bus :")
+    fig2 = px.bar(df_PDR_sort ,x="Actif",y="Coût total effectif",color="Coût total effectif",color_continuous_scale=[ ' green','yellow' ,' red'  ],text="Coût total effectif",labels={'Description':'Type de réparation','value':'nombre OT'},title="Top 10 des dépenses par bus :")
     st.write(fig2)
+    fig2.write_image("images/fig_top_10.jpeg")
 
     #------------------------------------------------------------------------------------------------
     st.subheader('Top 10 des PDR par coût :')
@@ -366,8 +380,252 @@ if uploaded_file1 :
     df_Cout_sort = pd.pivot_table(df2, index=["Article","Description"],values=['Coût ligne',"Quantité"],aggfunc='sum').reset_index()
     
     df_Cout_sort = df_Cout_sort.sort_values(by='Coût ligne',ascending=True)
-    df_Cout_sort = df_Cout_sort.tail(10)
+    df_Cout_sort = df_Cout_sort.tail(11)
     df_Cout_sort = df_Cout_sort.sort_values(by='Coût ligne',ascending=False)
+    df_Cout_sort = df_Cout_sort.drop(df_Cout_sort[df_Cout_sort['Article'] == 'GOIL'].index).reset_index(drop=True)
     df_Cout_sort["Quantité"]=df_Cout_sort["Quantité"].values.astype(int)
     st.table(df_Cout_sort)
+
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.axis('off')  # Turn off the axis labels
+    ax.axis('tight')  # Set the layout tightly
+    table = ax.table(cellText=df_Cout_sort.values, colLabels=df_Cout_sort.columns, loc='center', cellLoc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    table.scale(3,3)
+    plt.savefig('images/table_image.png', bbox_inches='tight', pad_inches=0.2)
+    
+    #------------------PDF ---------------------------------------------------------------------
+
+    def footer(pdf):
+        #footer
+        pdf.set_y(266)
+        # Select Arial italic 8
+        pdf.set_font('Arial', 'I', 12)
+        # Print centered page number
+        pdf.cell(0, 10, 'Page %s' % pdf.page_no(), 0, 0, 'C')
+
+    
+
+    def header(pdf):
+        pdf.image('images/Casabus-logo.png', 0, 8, 52)
+    def header2(pdf):
+        pdf.image('images/big_logo.png', 164, 8, 33)
+    @st.cache
+    def gen_pdf():
+        pdf = FPDF()
+        pdf.add_page()
+        
+        pdf.set_font("Helvetica", size=24)
+        header(pdf)
+        header2(pdf)
+        pdf.set_font('Arial', 'B', 20)
+        # Move to the right
+        pdf.cell(50)
+        
+        pdf.cell(100, 16, "Reporting CASA Bus", 1, 0, 'C')
+
+        
+        pdf.ln(30)
+        pdf.set_font('Arial', 'B', 25)
+# ------------------ Dépôt Bernoussi-----------------------------------------------------------------------------------------------
+        pdf.cell(60, 20, '----------------- Dépôt Bernoussi ------------------', 'C')
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(60, 20, "Sur "+v1+" OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig1_bus_BR.jpeg', x=5, y=75, w=200,h=130)
+
+        footer(pdf)
+        pdf.ln(400)
+        
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 80, "la répartition par type d'intervention et nombre d'OT sur le dépôt de Bernoussi ", 'C')
+        pdf.ln(38)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig2_bus_BR.jpeg', x=5, y=75, w=200,h=130)
+        pdf.ln(145)
+        pdf.cell(60, 20, "Le total des dépenses en matière de main d'oeuvre et de PDR sorties est de "+v11 + "DH", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "(Coût garanties exclu)", 'C')
+
+        footer(pdf)
+
+        pdf.ln(190)
+  #------------------------ depot BENMSIK ----------------------------------------------------------------------------
+        
+        # Move to the right
+        
+        
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(50)
+        pdf.cell(60, 20, '                     Dépôt BENMSIK ', 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(10)
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(60, 20, "Sur "+v2+" OT, la répartition par type d'intervention et son coût sur le dépôt de BENMSIK", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig1_bus_BN.jpeg', x=5, y=75, w=200,h=130)
+
+        footer(pdf)
+        pdf.ln(400)
+        
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 80, "la répartition par type d'intervention et nombre d'OT sur le dépôt de BENMSIK ", 'C')
+        pdf.ln(38)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig2_bus_BN.jpeg', x=5, y=75, w=200,h=130)
+        pdf.ln(145)
+        pdf.cell(60, 20, "Le total des dépenses en matière de main d'oeuvre et de PDR sorties est de "+v22+" DH", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "(Coût garanties exclu)", 'C')
+        footer(pdf)
+
+        pdf.ln(145)
+
+#----------------------------------depot MAARIF -----------------------------------------------------------
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(50)
+        pdf.cell(60, 20, '                     Dépôt MAARIF ', 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(10)
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(60, 20, "Sur "+v3+" OT, la répartition par type d'intervention et son coût sur le dépôt de MAARIF", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig1_bus_MA.jpeg', x=5, y=75, w=200,h=130)
+
+        footer(pdf)
+        pdf.ln(400)
+        
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 80, "la répartition par type d'intervention et nombre d'OT sur le dépôt de MAARIF ", 'C')
+        pdf.ln(38)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig2_bus_MA.jpeg', x=5, y=75, w=200,h=130)
+        pdf.ln(145)
+        pdf.cell(60, 20, "Le total des dépenses en matière de main d'oeuvre et de PDR sorties est de "+v33+" DH", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "(Coût garanties exclu)", 'C')
+        footer(pdf)
+
+        pdf.ln(145)
+#(------------------------------ depot MEDINA --------------------------------------)
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(50)
+        pdf.cell(60, 20, '                     Dépôt MEDIOUNA ', 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(10)
+        pdf.set_font('Times', '', 15)
+        pdf.ln(15)
+        pdf.cell(60, 20, "Sur "+v4+" OT, la répartition par type d'intervention et son coût sur le dépôt de MEDIOUNA", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig1_bus_MD.jpeg', x=5, y=75, w=200,h=130)
+
+        footer(pdf)
+        pdf.ln(400)
+        
+        pdf.set_font('Times', '', 15)
+        pdf.cell(60, 80, "la répartition par type d'intervention et nombre d'OT sur le dépôt de MEDIOUNA ", 'C')
+        pdf.ln(38)
+        pdf.cell(60, 20, "est comme se suit:", 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig2_bus_MD.jpeg', x=5, y=75, w=200,h=130)
+        pdf.ln(145)
+        pdf.cell(60, 20, "Le total des dépenses en matière de main d'oeuvre et de PDR sorties est de "+v44+" DH", 'C')
+        pdf.ln(7)
+        pdf.cell(60, 20, "(Coût garanties exclu)", 'C')
+        footer(pdf)
+
+        pdf.ln(145)
+
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(50)
+        pdf.cell(60, 65, 'Types des Interventions de Maintenance :', 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.set_font('Times', '', 15)
+        pdf.ln(33)
+        pdf.cell(60, 20, "La répartition des OT par types de maintenance est comme se suit :", 'C')
+        pdf.ln(7)
+        pdf.ln(15)
+        pdf.cell(10)
+        pdf.image('images/fig_intrv.jpeg', x=30, y=65, w=140,h=100)
+        pdf.ln(15)
+        pdf.ln(69)
+        pdf.set_font('Arial', 'B', 20)
+        pdf.cell(60, 20, "a. Interventions préventives :", 'C')
+        pdf.ln(15)
+        footer(pdf)
+        pdf.image('images/fig_intrv_prv.jpeg', x=5, y=165, w=170,h=100)
+        pdf.ln(145)
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(50)
+        pdf.cell(60, 65, 'Top 10 des dépenses par bus :', 'C')
+        header(pdf)
+        header2(pdf)
+        pdf.ln(50)
+        pdf.image('images/fig_top_10.jpeg', x=5, y=50, w=200,h=130)
+        pdf.ln(50)
+        pdf.set_font('Arial', 'B', 25)
+        pdf.ln(40)
+        pdf.cell(60, 65, 'Top 10 des PDR par coût :', 'C')
+        
+        pdf.image('images/table_image.png', x=5, y=195, w=195,h=80)
+        
+        return pdf.output(dest='S').encode('latin-1')
+
+
+
+    base64_pdf = b64encode(gen_pdf()).decode("utf-8")
+    pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="400" type="application/pdf">'
+    #to show pdf in page 
+    
+    #st.markdown(pdf_display, unsafe_allow_html=True)
+    # Add a download button:
+    st.subheader("Télecharger PDF")
+    st.download_button(
+        label="Télecharger Resultat PDF",
+        data=gen_pdf(),
+        file_name="Reporting CASA Bus.pdf",
+        mime="application/pdf",
+    )
+
+
     
