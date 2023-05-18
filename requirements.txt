@@ -12,5 +12,4 @@ selenium==4.6.0
 matplotlib==3.6.2
 streamlit-option-menu==0.3.2
 streamlit-extras==0.2.6
-altair==4.2.0
-pip==23.1.2
+
