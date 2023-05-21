@@ -90,29 +90,32 @@ if uploaded_file1 :
     #---- sum every type of repartition and show it in a dataframe --------------------------
     value_counts = df_BER["Type de réparation"].value_counts().reset_index()
     
-
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
-    value_counts = value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
-    value_counts["nombre OT"]=value_counts["nombre OT"].astype(int)
-    st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi est comme se suit:")
+    value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
     v1 = str(sum(value_counts["nombre OT"]))
+    st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
     data = data = [[1, "Maintenance"], [2, "Grandes réparations"], [3, "Accidents fautif"],[4, "Accidents sans faute"],[5, "Reformes"],[8, "Garanties"]
                    ,[9, "Matériel"],[51, "Vandalisme"],[62, "Qualité interieur"],[12, "Mauvais usage"],[90,"rien"]]
     
     df_type = pd.DataFrame(data, columns=['Type de réparation', 'Description'])
     # -----------merge three dataframe in one dataframe -----------------------------------------------
-
-    df_type["Type de réparation"]=df_type["Type de réparation"].astype(str)
-    df_BER_sort["Type de réparation"]=df_BER_sort["Type de réparation"].astype(str)
+    
     st.write(value_counts)
     st.write(df_type)
     st.write(df_BER_sort)
-    df_1 = pd.merge(pd.merge(df_BER_sort, value_counts,on="Type de réparation"),df_type, on="Type de réparation")
+    df_p = value_counts[['Type de réparation','nombre OT']].merge(df_BER_sort[['Type de réparation','Coût total effectif']], 
+                                    on = 'Type de réparation', 
+                                    how = 'left')
+    df_1 = df_p[['Type de réparation','nombre OT','Coût total effectif']].merge(df_type[['Type de réparation','Description']], 
+                                    on = 'Type de réparation', 
+                                    how = 'left')
+    st.write(df_p)
+    #df_1 = pd.concat([pd.concat([df_BER_sort, value_counts], axis=1),df_type],  axis=1)
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
 
-
+    st.write(df_1)
 
     #remove type rien in Description 
     df_1 = df_1.drop(df_1[df_1["Description"] == "rien" ].index)
