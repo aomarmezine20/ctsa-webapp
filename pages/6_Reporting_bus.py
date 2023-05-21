@@ -89,11 +89,13 @@ if uploaded_file1 :
     df_BER_sort = pd.pivot_table(df_BER, index=["Type de réparation"],values=['Coût total effectif'],aggfunc='sum').reset_index()
     #---- sum every type of repartition and show it in a dataframe --------------------------
     value_counts = df_BER["Type de réparation"].value_counts().reset_index()
-    
+    value_counts["nombre OT"]=value_counts["nombre OT"].astype(int)
+
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
     value_counts = value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
-    v1 = str(sum(value_counts["nombre OT"]))
+    
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi est comme se suit:")
+    v1 = str(sum(value_counts["nombre OT"]))
     #creat a new data frame of description of every repartition type -----------------------------------
     data = data = [[1, "Maintenance"], [2, "Grandes réparations"], [3, "Accidents fautif"],[4, "Accidents sans faute"],[5, "Reformes"],[8, "Garanties"]
                    ,[9, "Matériel"],[51, "Vandalisme"],[62, "Qualité interieur"],[12, "Mauvais usage"],[90,"rien"]]
