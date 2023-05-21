@@ -341,6 +341,7 @@ if uploaded_file1 :
 
 
     value_counts = df1["Type de travail"].value_counts().reset_index()
+    st.write(value_counts)
     value_counts = value_counts.drop(value_counts[value_counts['index'] == 'GASTO'].index).reset_index(drop=True)
 
     #value_counts1 = value_counts[value_counts['Type de travail'] != 'GASTO'].reset_index(drop=True)
