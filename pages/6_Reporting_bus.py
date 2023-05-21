@@ -91,7 +91,7 @@ if uploaded_file1 :
     value_counts = df_BER["Type de réparation"].value_counts().reset_index()
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
-    value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    value_counts = value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
     v1 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
@@ -100,7 +100,6 @@ if uploaded_file1 :
     
     df_type = pd.DataFrame(data, columns=['Type de réparation', 'Description'])
     # -----------merge three dataframe in one dataframe -----------------------------------------------
-    value_counts = value_counts.rename(columns = {'Type de réparation':'Type de réparation','nombre OT':'nombre OT'})
 
     df_type["Type de réparation"]=df_type["Type de réparation"].astype(str)
     df_BER_sort["Type de réparation"]=df_BER_sort["Type de réparation"].astype(str)
