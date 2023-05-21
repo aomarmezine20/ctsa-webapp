@@ -123,7 +123,7 @@ if uploaded_file1 :
     st.write(df_t1_prv2)
     
     #plot the datafram in bar chart 
-    fig = px.bar(df_t1_prv2,x="Gamme de maintenance à l'origine de l'intervention", y=df_t1_prv2[0],color='Etat', text_auto='',labels={
+    fig = px.bar(df_t1_prv2,x="Gamme de maintenance à l'origine de l'intervention", y=df_t1_prv2[0],color='count', text_auto='',labels={
                      "0": "Etat",},height=600, width=800)
 
     #plot it 
