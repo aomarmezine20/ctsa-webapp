@@ -421,7 +421,7 @@ if uploaded_file1 :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"])), 'C')
     #----------------------------------------------------------------------------------------------------
         pdf.ln(0)
         pdf.set_font('Times', 'B', 25)
@@ -453,7 +453,7 @@ if uploaded_file1 :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"])), 'C')
     #----------------------------------------------------------------------------------------------------
         footer(pdf)
         pdf.ln(0)
@@ -576,7 +576,7 @@ if uploaded_file1 :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"])), 'C')
     #------------------------------------------------------------------------------------------------------------
 
         pdf.ln(0)
@@ -610,7 +610,7 @@ if uploaded_file1 :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"])), 'C')
         #------------------------------------------------------------- ------------------------------------
 
         footer(pdf)
