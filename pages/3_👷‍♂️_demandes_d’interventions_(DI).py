@@ -64,7 +64,7 @@ if uploaded_file1 :
     st.header('Nombre total des DI du mois')
     df['Month'] = pd.DatetimeIndex(df["Date de l'événement"]).month
 
-    st.markdown('le nombre des demandes d’interventions du mois  **'+ str(int(df['Month'].values[0]))+'** est **' +str(df["Code de l'état"].count()) + '** interventions')
+    st.write('le nombre des demandes d’interventions du mois  **'+ str(int(df['Month'].values[0]))+'** est **' +str(df["Code de l'état"].count()) + '** interventions')
 
     #SHOW the pie of DI 
     st.header('Graphe des états des DI du mois')
@@ -117,7 +117,7 @@ if uploaded_file1 :
 
     #show top 5 of every pacr us PARC T1---------------------------------------------------
     st.subheader("5 US/T1")
-    st.markdown('**Top 5 des US sur lesquelles on a plus de de DI PARC T1**')
+    st.write('**Top 5 des US sur lesquelles on a plus de de DI PARC T1**')
     #convert serie to datafram
     table1=pd.DataFrame(dfcount_t1.head(5))
    #convert table of top 5 us t1 to table
@@ -130,7 +130,7 @@ if uploaded_file1 :
     
     #show top 5 of every pacr us PARC T2----------------------------------------------------------
     st.subheader("5 US/T2")
-    st.markdown('**Top 5 des US sur lesquelles on a plus de de DI PARC T2**')
+    st.write('**Top 5 des US sur lesquelles on a plus de de DI PARC T2**')
     
     #convert serie to datafram
     table2=pd.DataFrame(dfcount_t2.head(5))
