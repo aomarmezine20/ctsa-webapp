@@ -103,28 +103,18 @@ if uploaded_file1 :
     
     
 
-    column_name = "Type de réparation"
-    if column_name in value_counts:
-    # Column exists in the DataFrame
-      st.write("Column exists.1")
-    if column_name in df_type:
-    # Column exists in the DataFrame
-      st.write("Column exists.2")
-    if column_name in df_BER_sort:
-    # Column exists in the DataFrame
-      st.write("Column exists.3")
+    
     df_p = value_counts[['Type de réparation','nombre OT']].merge(df_BER_sort[['Type de réparation','Coût total effectif']], 
                                     on = 'Type de réparation', 
                                     how = 'left')
     df_1 = df_p[['Type de réparation','nombre OT','Coût total effectif']].merge(df_type[['Type de réparation','Description']], 
                                     on = 'Type de réparation', 
                                     how = 'left')
-    st.write(df_p)
+   
     #df_1 = pd.concat([pd.concat([df_BER_sort, value_counts], axis=1),df_type],  axis=1)
     #-------change the type of reaparion count to str 
     df_1["Type de réparation"]=df_1["Type de réparation"].values.astype(str)
 
-    st.write(df_1)
 
     #remove type rien in Description 
     df_1 = df_1.drop(df_1[df_1["Description"] == "rien" ].index)
