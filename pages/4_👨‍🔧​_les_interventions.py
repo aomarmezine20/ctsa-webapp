@@ -207,7 +207,6 @@ if uploaded_file1 :
     #make new datafram of famille des defaut count
     st.subheader("La répartition des interventions par famille de défaut :")
     df_t1_cr2 =df_t1_cr[["Famille de défaut"]].value_counts().reset_index()
-    st.write(df_t1_cr2)
     #plot this datafrm in bar chart
     fig = px.bar(df_t1_cr2,x="Famille de défaut",y="count", text_auto='',labels={
                      "0": "Nbr des OT",},height=700, width=850)
@@ -245,12 +244,12 @@ if uploaded_file1 :
     st.header('Suivi de la maintenance préventive ')
 
 #check if is not any values of preventif -------------------------------------------------------------------
-    if df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].empty :
+    if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
         st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
 
-        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"]))+'** ')
+        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
 #-----------------------------------------------------------------------------------------------------------------------------------
 
     st.subheader('Suivi des interventions préventives :')
@@ -261,7 +260,7 @@ if uploaded_file1 :
     df_t2_prv2 =df_t2_prv[["Gamme de maintenance à l'origine de l'intervention",'Etat']].value_counts().reset_index()
     
     #plot the datafram in bar chart 
-    fig = px.bar(df_t2_prv2,x="Gamme de maintenance à l'origine de l'intervention", y=df_t2_prv2[0],color='Etat', text_auto='',labels={
+    fig = px.bar(df_t2_prv2,x="Gamme de maintenance à l'origine de l'intervention", y="count",color='Etat', text_auto='',labels={
                      "0": "Etat",})
 
     #plot it 
@@ -314,12 +313,12 @@ if uploaded_file1 :
  #--------------------case if there isn't any values of correctif ------------------------------------
  
 
-    if df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"].empty :
+    if df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
         st.markdown('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
     else :
 
-        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"]))+'** ')
+        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
 #----------------------------------------------------------------------------------------------------
 
     
@@ -343,7 +342,7 @@ if uploaded_file1 :
     st.subheader("La répartition des interventions par famille de défaut :")
     df_t2_cr2 =df_t2_cr[["Famille de défaut"]].value_counts().reset_index()
     #plot this datafrm in bar chart
-    fig = px.bar(df_t2_cr2,x="Famille de défaut",y=df_t2_cr2[0], text_auto='',labels={
+    fig = px.bar(df_t2_cr2,x="Famille de défaut",y="count", text_auto='',labels={
                      "0": "Nbr des OT",})
 
     st.plotly_chart(fig)
