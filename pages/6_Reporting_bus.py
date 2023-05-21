@@ -105,6 +105,7 @@ if uploaded_file1 :
     st.write(df_type)
     st.write(df_BER_sort)
     value_counts.rename(columns={'index': 'Type de réparation','nombre OT':'nombre OT'}, inplace=True)
+    value_counts.set_index('Type de réparation', inplace=True)
 
     column_name = "Type de réparation"
     if column_name in value_counts:
