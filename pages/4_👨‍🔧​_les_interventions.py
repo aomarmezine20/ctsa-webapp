@@ -124,7 +124,7 @@ if uploaded_file1 :
     
     #plot the datafram in bar chart 
     fig = px.bar(df_t1_prv2,x="Gamme de maintenance à l'origine de l'intervention", y="Etat",color='count', text_auto='',labels={
-                     "0": "Etat",},height=600, width=800)
+                     "0": "count",},height=600, width=800)
 
     #plot it 
     st.plotly_chart(fig)
