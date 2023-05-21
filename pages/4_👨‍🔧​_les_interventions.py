@@ -107,7 +107,7 @@ if uploaded_file1 :
     
 
 #----------------case if values of prventif doesn't existe -----------------------------------------------------
-    if df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"].empty :
+    if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"].empty :
          #show nbr of correctif interventions
         st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
