@@ -92,6 +92,8 @@ if uploaded_file1 :
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
     value_counts.rename(columns = {'nombre OT':'Type de réparation','count':'nombre OT'}, inplace = True)
+    #value_counts.rename(columns = {'index':'Type de réparation','count':'nombre OT'}, inplace = True)
+ 
     v1 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de Bernoussi est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
@@ -158,7 +160,9 @@ if uploaded_file1 :
     value_counts = df_BEN["Type de réparation"].value_counts().reset_index()
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
-    value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    value_counts.rename(columns = {'nombre OT':'Type de réparation','count':'nombre OT'}, inplace = True)
+
+    #value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
     v2 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de BENMSIK est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
@@ -218,7 +222,9 @@ if uploaded_file1 :
     value_counts = df_MAA["Type de réparation"].value_counts().reset_index()
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
-    value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    value_counts.rename(columns = {'nombre OT':'Type de réparation','count':'nombre OT'}, inplace = True)
+
+    #value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
     v3= str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de MAARIF est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
@@ -282,7 +288,9 @@ if uploaded_file1 :
     value_counts = df_MED["Type de réparation"].value_counts().reset_index()
     
     #---- rename the dataframe of the count of every repartion to new name columns -------------------
-    value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
+    value_counts.rename(columns = {'nombre OT':'Type de réparation','count':'nombre OT'}, inplace = True)
+
+    #value_counts.rename(columns = {'index':'Type de réparation','Type de réparation':'nombre OT'}, inplace = True)
     v4 = str(sum(value_counts["nombre OT"]))
     st.write("Sur **"+str(sum(value_counts["nombre OT"]))+"** OT, la répartition par type d'intervention et son coût sur le dépôt de MEDIOUNA est comme se suit:")
     #creat a new data frame of description of every repartition type -----------------------------------
