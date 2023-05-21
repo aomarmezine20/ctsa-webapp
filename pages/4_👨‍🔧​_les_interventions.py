@@ -8,6 +8,8 @@ from fpdf import FPDF
 import datetime as dt
 from datetime import datetime
 import numpy as np
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 
