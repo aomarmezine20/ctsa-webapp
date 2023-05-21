@@ -101,7 +101,6 @@ if uploaded_file1 :
 
     #rest index to separate index colomn and make calculation to show every nature of intervention 
     df_intv_count = df_intv_count.reset_index()
-    st.write(df_intv_count)
     st.header('Suivi de la maintenance préventive ')
 
     
@@ -120,7 +119,6 @@ if uploaded_file1 :
     
     #calcule every gamme how much have of status for every type of status and name it df_t1_prv2
     df_t1_prv2 =df_t1_prv[["Gamme de maintenance à l'origine de l'intervention",'Etat']].value_counts().reset_index()
-    st.write(df_t1_prv2)
     
     #plot the datafram in bar chart 
     fig = px.bar(df_t1_prv2,x="Gamme de maintenance à l'origine de l'intervention", y='count',color="Etat", text_auto='count',labels={
@@ -182,12 +180,12 @@ if uploaded_file1 :
     
     #-------------if is not any values of correctif --------------------------------------------------------------------------------------
 
-    if df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].empty :
+    if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
         st.markdown('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
     else :
 
-        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"]))+'** ')
+        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
     #------------------------------------------------------------------------------------
     
     st.subheader('La répartition des interventions correctives par priorités :')
