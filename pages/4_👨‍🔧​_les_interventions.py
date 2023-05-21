@@ -417,7 +417,7 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
         pdf.cell(10)
     #--------------------case if there isn't any values of preventif 
-        if df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"].empty :
+        if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
@@ -449,7 +449,7 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
     #--------------------case if there isn't any values of correctif ------------------------------------
 
-        if df_intv_count[df_intv_count['index']=='CORRECTIF']["Nature d'intervention"].empty :
+        if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
@@ -572,7 +572,7 @@ if uploaded_file1 :
         pdf.cell(10)
     #--------------------case if there isn't any values of preventif ------------------------------------
 
-        if df_intv_count2[df_intv_count2['index']=='PREVENTIF']["Nature d'intervention"].empty :
+        if df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
@@ -606,7 +606,7 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
     #--------------------case if there isn't any values of correctif ------------------------------------
 
-        if df_intv_count2[df_intv_count2['index']=='CORRECTIF']["Nature d'intervention"].empty :
+        if df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
