@@ -108,9 +108,9 @@ if uploaded_file1 :
 #----------------case if values of prventif doesn't existe -----------------------------------------------------
     if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"].empty :
          #show nbr of correctif interventions
-        st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
+        st.write('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
-        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
+        st.write('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
 #---------------------------------------------------------------------------------------------------------------------
 
     st.subheader('Suivi des interventions préventives :')
@@ -182,10 +182,10 @@ if uploaded_file1 :
 
     if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
-        st.markdown('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
+        st.write('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
     else :
 
-        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
+        st.write('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
     #------------------------------------------------------------------------------------
     
     st.subheader('La répartition des interventions correctives par priorités :')
@@ -199,10 +199,10 @@ if uploaded_file1 :
     st.plotly_chart(fig)
     fig.write_image("images/fig_Intrv3.jpeg")
     #explaine every priority key of chart
-    st.markdown("* **FJ ( y compris les FJ prioritaire):** Fin de Jour, c’est une panne mineur qui peut etre planifiée à la fin de l’exploitation de la rame")
-    st.markdown("* **FT :** Fin de Tour, c’est une panne qui nécessite le rapatriement de la rame à la fin de sa course")
-    st.markdown("* **HLP :** Haut le Pied, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement immédiat de le rame")
-    st.markdown("* **RP :** Remorquage/Poussage, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement de la rame en mode US-US soit par remorquage [ US menante], soit par poussage [US menée] ou par camion rail-route.")
+    st.write("* **FJ ( y compris les FJ prioritaire):** Fin de Jour, c’est une panne mineur qui peut etre planifiée à la fin de l’exploitation de la rame")
+    st.write("* **FT :** Fin de Tour, c’est une panne qui nécessite le rapatriement de la rame à la fin de sa course")
+    st.write("* **HLP :** Haut le Pied, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement immédiat de le rame")
+    st.write("* **RP :** Remorquage/Poussage, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement de la rame en mode US-US soit par remorquage [ US menante], soit par poussage [US menée] ou par camion rail-route.")
     
     #make new datafram of famille des defaut count
     st.subheader("La répartition des interventions par famille de défaut :")
@@ -229,7 +229,7 @@ if uploaded_file1 :
 #--------------------------------------------PARC T2 ------------------------------------------------------------------------------------
     st.header('-----------------PARC T2------------------')
     st.subheader('Le nombre total d’ordre de travaux')
-    st.markdown('  * le nombre des interventions du mois est **'+str(df_t2["Code de l'intervention"].count())+'** ')
+    st.write('  * le nombre des interventions du mois est **'+str(df_t2["Code de l'intervention"].count())+'** ')
     st.subheader('La répartition des interventions de maintenance par type :')
     #plot etat of interventions pie chart 
     fig = px.pie(df_t2, names="Nature d'intervention",color="Nature d'intervention")
@@ -246,10 +246,10 @@ if uploaded_file1 :
 #check if is not any values of preventif -------------------------------------------------------------------
     if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
-        st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
+        st.write('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
 
-        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
+        st.write('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
 #-----------------------------------------------------------------------------------------------------------------------------------
 
     st.subheader('Suivi des interventions préventives :')
@@ -315,10 +315,10 @@ if uploaded_file1 :
 
     if df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
-        st.markdown('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
+        st.write('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
     else :
 
-        st.markdown('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
+        st.write('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
 #----------------------------------------------------------------------------------------------------
 
     
@@ -333,10 +333,10 @@ if uploaded_file1 :
     st.plotly_chart(fig)
     fig.write_image("images/fig_intrv8.jpeg")
     #explaine every priority key of chart
-    st.markdown("* **FJ ( y compris les FJ prioritaire):** Fin de Jour, c’est une panne mineur qui peut etre planifiée à la fin de l’exploitation de la rame")
-    st.markdown("* **FT :** Fin de Tour, c’est une panne qui nécessite le rapatriement de la rame à la fin de sa course")
-    st.markdown("* **HLP :** Haut le Pied, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement immédiat de le rame")
-    st.markdown("* **RP :** Remorquage/Poussage, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement de la rame en mode US-US soit par remorquage [ US menante], soit par poussage [US menée] ou par camion rail-route.")
+    st.write("* **FJ ( y compris les FJ prioritaire):** Fin de Jour, c’est une panne mineur qui peut etre planifiée à la fin de l’exploitation de la rame")
+    st.write("* **FT :** Fin de Tour, c’est une panne qui nécessite le rapatriement de la rame à la fin de sa course")
+    st.write("* **HLP :** Haut le Pied, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement immédiat de le rame")
+    st.write("* **RP :** Remorquage/Poussage, c’est une panne majeur qui nécessite l’évacuation des voyageurs et le rapatriement de la rame en mode US-US soit par remorquage [ US menante], soit par poussage [US menée] ou par camion rail-route.")
     
     #make new datafram of famille des defaut count
     st.subheader("La répartition des interventions par famille de défaut :")
@@ -417,7 +417,7 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
         pdf.cell(10)
     #--------------------case if there isn't any values of preventif 
-        if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"].empty :
+        if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["Nature d'intervention"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
