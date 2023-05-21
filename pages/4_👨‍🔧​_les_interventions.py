@@ -111,7 +111,7 @@ if uploaded_file1 :
          #show nbr of correctif interventions
         st.markdown('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
-        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count['index']=='PREVENTIF']["Nature d'intervention"]))+'** ')
+        st.markdown('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
 #---------------------------------------------------------------------------------------------------------------------
 
     st.subheader('Suivi des interventions préventives :')
