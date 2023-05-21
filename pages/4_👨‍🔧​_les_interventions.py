@@ -101,6 +101,7 @@ if uploaded_file1 :
 
     #rest index to separate index colomn and make calculation to show every nature of intervention 
     df_intv_count = df_intv_count.reset_index()
+    st.write(df_intv_count)
     st.header('Suivi de la maintenance préventive ')
 
     
