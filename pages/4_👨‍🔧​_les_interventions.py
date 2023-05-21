@@ -120,6 +120,7 @@ if uploaded_file1 :
     
     #calcule every gamme how much have of status for every type of status and name it df_t1_prv2
     df_t1_prv2 =df_t1_prv[["Gamme de maintenance à l'origine de l'intervention",'Etat']].value_counts().reset_index()
+    st.write(df_t1_prv2)
     
     #plot the datafram in bar chart 
     fig = px.bar(df_t1_prv2,x="Gamme de maintenance à l'origine de l'intervention", y=df_t1_prv2[0],color='Etat', text_auto='',labels={
