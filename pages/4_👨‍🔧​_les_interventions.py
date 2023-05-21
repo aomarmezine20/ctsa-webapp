@@ -209,7 +209,7 @@ if uploaded_file1 :
     df_t1_cr2 =df_t1_cr[["Famille de défaut"]].value_counts().reset_index()
     st.write(df_t1_cr2)
     #plot this datafrm in bar chart
-    fig = px.bar(df_t1_cr2,x="Famille de défaut",y=df_t1_cr2[0], text_auto='',labels={
+    fig = px.bar(df_t1_cr2,x="Famille de défaut",y="count", text_auto='',labels={
                      "0": "Nbr des OT",},height=700, width=850)
 
     st.plotly_chart(fig)
