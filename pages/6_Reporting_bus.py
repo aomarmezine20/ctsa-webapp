@@ -104,6 +104,16 @@ if uploaded_file1 :
     st.write(value_counts)
     st.write(df_type)
     st.write(df_BER_sort)
+    column_name = "Type de réparation"
+    if column_name in value_counts:
+    # Column exists in the DataFrame
+      st.write("Column exists.1")
+    if column_name in df_type:
+    # Column exists in the DataFrame
+      st.write("Column exists.2")
+    if column_name in df_BER_sort:
+    # Column exists in the DataFrame
+      st.write("Column exists.3")
     df_p = value_counts[['Type de réparation','nombre OT']].merge(df_BER_sort[['Type de réparation','Coût total effectif']], 
                                     on = 'Type de réparation', 
                                     how = 'left')
