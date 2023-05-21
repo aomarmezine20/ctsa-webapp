@@ -100,6 +100,8 @@ if uploaded_file1 :
     
     df_type = pd.DataFrame(data, columns=['Type de réparation', 'Description'])
     # -----------merge three dataframe in one dataframe -----------------------------------------------
+    value_counts.rename(columns = {'Type de réparation':'Type de réparation','nombre OT':'nombre OT'}, inplace = True)
+
     df_type["Type de réparation"]=df_type["Type de réparation"].astype(str)
     df_BER_sort["Type de réparation"]=df_BER_sort["Type de réparation"].astype(str)
     st.write(value_counts)
