@@ -341,7 +341,6 @@ if uploaded_file1 :
 
 
     value_counts = df1["Type de travail"].value_counts().reset_index()
-    st.write(value_counts)
     value_counts = value_counts.drop(value_counts[value_counts['Type de travail'] == 'GASTO'].index).reset_index(drop=True)
 
     #value_counts1 = value_counts[value_counts['Type de travail'] != 'GASTO'].reset_index(drop=True)
@@ -356,6 +355,8 @@ if uploaded_file1 :
     st.subheader('a. Interventions préventives :')
 
     value_counts = df1["Description"].value_counts().reset_index()
+    st.write(value_counts)
+
     value_c = value_counts[value_counts['index'].str.startswith("MT15")]
     MT15=sum(value_c["Description"])
     value_cNT = value_counts[value_counts['index'].str.startswith("MTKM")]
