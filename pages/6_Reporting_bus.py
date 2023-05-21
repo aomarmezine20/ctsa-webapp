@@ -342,12 +342,12 @@ if uploaded_file1 :
 
     value_counts = df1["Type de travail"].value_counts().reset_index()
     st.write(value_counts)
-    value_counts = value_counts.drop(value_counts[value_counts['index'] == 'GASTO'].index).reset_index(drop=True)
+    value_counts = value_counts.drop(value_counts[value_counts['Type de travail'] == 'GASTO'].index).reset_index(drop=True)
 
     #value_counts1 = value_counts[value_counts['Type de travail'] != 'GASTO'].reset_index(drop=True)
     
 
-    fig = px.pie(value_counts, names= "index" ,values='Type de travail' ,color="Type de travail")
+    fig = px.pie(value_counts, names= "Type de travail" ,values='count' ,color="count")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
     fig.write_image("images/fig_intrv.jpeg")
