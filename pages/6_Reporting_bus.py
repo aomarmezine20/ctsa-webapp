@@ -355,7 +355,6 @@ if uploaded_file1 :
     st.subheader('a. Interventions préventives :')
 
     value_counts = df1["Description"].value_counts().reset_index()
-    st.write(value_counts)
 
     value_c = value_counts[value_counts['Description'].str.startswith("MT15")]
     MT15=sum(value_c["count"])
