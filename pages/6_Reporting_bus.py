@@ -271,7 +271,7 @@ if uploaded_file1 :
     
 
     #----creat DATAFRAME FOR JUST BERNOSSI DEPOT -----------------
-    df_MED = df1[df1['Intervention'].str.startswith('MAA')]
+    df_MED = df1[df1['Intervention'].str.startswith('MED')]
 
 
     df_MED = df_MED.sort_values(by='Actif')
