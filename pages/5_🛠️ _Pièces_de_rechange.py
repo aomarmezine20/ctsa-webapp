@@ -79,8 +79,8 @@ if uploaded_file2 and uploaded_file2:
     st.write(df2)
     
     #make a new datafram contain spesefic elements that we want
-    df = df1[["Code de l'intervention",'MOVEMENTQUANTITY',"Code Article","Type OT","Description Article"]].merge(df2[["Code de l'intervention",'Matériel']], 
-                                    on = "Code de l'intervention", 
+    df = df1[["Intervention d'imputation du mouvement",'Quantité du mouvement',"Article","Article Libellé"]].merge(df2[["Intervention d'imputation du mouvement",'Matériel',"Nature d'intervention Code de la nature d'intervention"]], 
+                                    on = "Intervention d'imputation du mouvement", 
                                     how = 'inner')
 
     #creat list of T1 parc 
@@ -104,11 +104,11 @@ if uploaded_file2 and uploaded_file2:
     #split column of materiel to new columns contain just ud
     df['US'] = df['Matériel'].str.split('.').str[0]
     #just the colum start with P.MR
-    df_starts_with_pm = df[df['Code Article'].str.startswith('P.MR')]
+    df_starts_with_pm = df[df['Article'].str.startswith('P.MR')]
 
     
     #change quantity of pdr to int
-    df["MOVEMENTQUANTITY"] = df["MOVEMENTQUANTITY"].astype(int)
+    df["Quantité du mouvement"] = df["Quantité du mouvement"].astype(int)
 
     #split the big datafram to two for each parc
     df_t1 = df[df['US'].isin(parc1())]
@@ -121,15 +121,15 @@ if uploaded_file2 and uploaded_file2:
     st.header('-----------------PARC T1------------------')
     #----- Top 20 piece ------------------------------------------------
     st.subheader('Top 20 des pièces consommées parc T1 PMR: ')
-    df_starts_with_pm_t1qnt = df_starts_with_pm_t1[["Code Article", "MOVEMENTQUANTITY"]]
-    df_starts_with_pm_t1qnt = pd.pivot_table(df_starts_with_pm_t1qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_starts_with_pm_t1qnt = df_starts_with_pm_t1[["Article", "Quantité du mouvement"]]
+    df_starts_with_pm_t1qnt = pd.pivot_table(df_starts_with_pm_t1qnt, index=["Article"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
     #sort another time the list of us of every parc and show top 20 of every parc 
-    df_starts_with_pm_t1qnt = df_starts_with_pm_t1qnt.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_starts_with_pm_t1qnt = df_starts_with_pm_t1qnt.sort_values(by = ["Quantité du mouvement"],ascending=False)
     df_starts_with_pm_t1qnt = df_starts_with_pm_t1qnt.tail(20)
     
     #plot the result in bar chart
-    fig = px.bar(df_starts_with_pm_t1qnt,x="Code Article",y='MOVEMENTQUANTITY', text_auto='')
+    fig = px.bar(df_starts_with_pm_t1qnt,x="Article",y='Quantité du mouvement', text_auto='')
 
     st.plotly_chart(fig)
     #save it in image
@@ -138,15 +138,15 @@ if uploaded_file2 and uploaded_file2:
     #-------- 
     st.subheader('Top 20 des pièces consommées parc T1  : ')
 
-    df_t1_qnt = df_t1[["Code Article", "MOVEMENTQUANTITY"]]
-    df_t1_qnt = pd.pivot_table(df_t1_qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_t1_qnt = df_t1[["Article", "Quantité du mouvement"]]
+    df_t1_qnt = pd.pivot_table(df_t1_qnt, index=["Article"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
     #sort another time the list of us of every parc and show top 20 of every parc 
-    df_t1_qnt = df_t1_qnt.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_t1_qnt = df_t1_qnt.sort_values(by = ["Quantité du mouvement"],ascending=False)
     df_t1_qnt = df_t1_qnt.tail(20)
     
     #plot the result in bar chart
-    fig = px.bar(df_t1_qnt,x="Code Article",y='MOVEMENTQUANTITY', text_auto='')
+    fig = px.bar(df_t1_qnt,x="Article",y='Quantité du mouvement', text_auto='')
 
     st.plotly_chart(fig)
     #save it in image
@@ -155,14 +155,14 @@ if uploaded_file2 and uploaded_file2:
 
     #----------- top 10 us consommablle of piece -------------------------------------
     st.subheader('Top 10 US à haute consommation de PDR parc T1: ')
-    df_t1_us = df_t1[["US", "MOVEMENTQUANTITY"]]
-    df_t1_us = pd.pivot_table(df_t1_us, index=["US"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_t1_us = df_t1[["US", "Quantité du mouvement"]]
+    df_t1_us = pd.pivot_table(df_t1_us, index=["US"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
-    df_t1_us = df_t1_us.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_t1_us = df_t1_us.sort_values(by = ["Quantité du mouvement"],ascending=False)
     df_t1_us = df_t1_us.tail(10)
 
     #plot the result in bar chart
-    fig = px.bar(df_t1_us,x="US",y='MOVEMENTQUANTITY', text_auto='')
+    fig = px.bar(df_t1_us,x="US",y='Quantité du mouvement', text_auto='')
 
     st.plotly_chart(fig)
     #save it in image
@@ -170,14 +170,14 @@ if uploaded_file2 and uploaded_file2:
     
     #------- repartition par type --------------------------------------------
     st.subheader('Répartition des sorties PDR en fonction des types OT parc T1: ')
-    df_t1_type = df_t1[["Type OT", "MOVEMENTQUANTITY"]]
-    df_t1_type["MOVEMENTQUANTITY"] = abs(df_t1_type['MOVEMENTQUANTITY'])
+    df_t1_type = df_t1[["Nature d'intervention Code de la nature d'intervention", "Quantité du mouvement"]]
+    df_t1_type["Quantité du mouvement"] = abs(df_t1_type['Quantité du mouvement'])
     
-    df_t1_type = pd.pivot_table(df_t1_type, index=["Type OT"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_t1_type = pd.pivot_table(df_t1_type, index=["Nature d'intervention Code de la nature d'intervention"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
-    df_t1_type = df_t1_type.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_t1_type = df_t1_type.sort_values(by = ["Quantité du mouvement"],ascending=False)
 
-    fig = px.pie(df_t1_type, names= "Type OT" ,values='MOVEMENTQUANTITY' ,color="MOVEMENTQUANTITY")
+    fig = px.pie(df_t1_type, names= "Nature d'intervention Code de la nature d'intervention" ,values='Quantité du mouvement' ,color="Quantité du mouvement")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
 
@@ -191,15 +191,15 @@ if uploaded_file2 and uploaded_file2:
     st.header('-----------------PARC T2------------------')
     #----- Top 20 piece ------------------------------------------------
     st.subheader('Top 20 des pièces consommées parc T2 PMR: ')
-    df_starts_with_pm_t2qnt = df_starts_with_pm_t2[["Code Article", "MOVEMENTQUANTITY"]]
-    df_starts_with_pm_t2qnt = pd.pivot_table(df_starts_with_pm_t2qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_starts_with_pm_t2qnt = df_starts_with_pm_t2[["Article", "Quantité du mouvement"]]
+    df_starts_with_pm_t2qnt = pd.pivot_table(df_starts_with_pm_t2qnt, index=["Article"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
     #sort another time the list of us of every parc and show top 20 of every parc 
-    df_starts_with_pm_t2qnt = df_starts_with_pm_t2qnt.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_starts_with_pm_t2qnt = df_starts_with_pm_t2qnt.sort_values(by = ["Quantité du mouvement"],ascending=False)
     df_starts_with_pm_t2qnt = df_starts_with_pm_t2qnt.tail(20)
     
     #plot the result in bar chart
-    fig = px.bar(df_starts_with_pm_t2qnt,x="Code Article",y='MOVEMENTQUANTITY', text_auto='')
+    fig = px.bar(df_starts_with_pm_t2qnt,x="Article",y='Quantité du mouvement', text_auto='')
 
     st.plotly_chart(fig)
     #save it in image
@@ -207,15 +207,15 @@ if uploaded_file2 and uploaded_file2:
 
 
     st.subheader('Top 20 des pièces consommées parc T2: ')
-    df_t2_qnt = df_t2[["Code Article", "MOVEMENTQUANTITY"]]
-    df_t2_qnt = pd.pivot_table(df_t2_qnt, index=["Code Article"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_t2_qnt = df_t2[["Article", "Quantité du mouvement"]]
+    df_t2_qnt = pd.pivot_table(df_t2_qnt, index=["Article"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
     #sort another time the list of us of every parc and show top 20 of every parc 
-    df_t2_qnt = df_t2_qnt.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_t2_qnt = df_t2_qnt.sort_values(by = ["Quantité du mouvement"],ascending=False)
     df_t2_qnt = df_t2_qnt.tail(20)
     
     #plot the result in bar chart
-    fig = px.bar(df_t2_qnt,x="Code Article",y='MOVEMENTQUANTITY', text_auto='')
+    fig = px.bar(df_t2_qnt,x="Article",y='Quantité du mouvement', text_auto='')
 
     st.plotly_chart(fig)
     #save it in image
@@ -223,14 +223,14 @@ if uploaded_file2 and uploaded_file2:
 
     #----------- top 10 us consommablle of piece -------------------------------------
     st.subheader('Top 10 US à haute consommation de PDR parc T2: ')
-    df_t2_us = df_t2[["US", "MOVEMENTQUANTITY"]]
-    df_t2_us = pd.pivot_table(df_t2_us, index=["US"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_t2_us = df_t2[["US", "Quantité du mouvement"]]
+    df_t2_us = pd.pivot_table(df_t2_us, index=["US"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
-    df_t2_us = df_t2_us.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_t2_us = df_t2_us.sort_values(by = ["Quantité du mouvement"],ascending=False)
     df_t2_us = df_t2_us.tail(10)
 
     #plot the result in bar chart
-    fig = px.bar(df_t2_us,x="US",y='MOVEMENTQUANTITY', text_auto='')
+    fig = px.bar(df_t2_us,x="US",y='Quantité du mouvement', text_auto='')
 
     st.plotly_chart(fig)
     #save it in image
@@ -238,14 +238,14 @@ if uploaded_file2 and uploaded_file2:
     
     #------- repartition par type --------------------------------------------
     st.subheader('Répartition des sorties PDR en fonction des types OT parc T2: ')
-    df_t2_type = df_t2[["Type OT", "MOVEMENTQUANTITY"]]
-    df_t2_type["MOVEMENTQUANTITY"] = abs(df_t2_type['MOVEMENTQUANTITY'])
+    df_t2_type = df_t2[["Nature d'intervention Code de la nature d'intervention", "Quantité du mouvement"]]
+    df_t2_type["Quantité du mouvement"] = abs(df_t2_type['Quantité du mouvement'])
     
-    df_t2_type = pd.pivot_table(df_t2_type, index=["Type OT"],values=['MOVEMENTQUANTITY'],aggfunc='sum').reset_index()
+    df_t2_type = pd.pivot_table(df_t2_type, index=["Nature d'intervention Code de la nature d'intervention"],values=['Quantité du mouvement'],aggfunc='sum').reset_index()
 
-    df_t2_type = df_t2_type.sort_values(by = ["MOVEMENTQUANTITY"],ascending=False)
+    df_t2_type = df_t2_type.sort_values(by = ["Quantité du mouvement"],ascending=False)
 
-    fig = px.pie(df_t2_type, names= "Type OT" ,values='MOVEMENTQUANTITY' ,color="MOVEMENTQUANTITY")
+    fig = px.pie(df_t2_type, names= "Nature d'intervention Code de la nature d'intervention" ,values='Quantité du mouvement' ,color="Quantité du mouvement")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
 
@@ -257,7 +257,7 @@ if uploaded_file2 and uploaded_file2:
     code = st.text_input("Entrez le code de l'article")
 
     # Rechercher la description correspondante
-    result = df.loc[df['Code Article'] == code, 'Description Article']
+    result = df.loc[df['Article'] == code, 'Article Libellé']
 
     # Afficher la description de l'article
     if not result.empty:
