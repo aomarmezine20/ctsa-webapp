@@ -94,12 +94,12 @@ if uploaded_file1 :
     st.text(' le nombre des interventions du mois est '+str(df_t1["Code de l'intervention"].count())+' ')
     st.subheader('La répartition des interventions de maintenance par type :')
     #plot etat of interventions pie chart 
-    fig = px.pie(df_t1, names="Nature d'intervention",color="Nature d'intervention")
+    fig = px.pie(df_t1, names="Nature d'intervention Code de la nature d'intervention",color="Nature d'intervention Code de la nature d'intervention")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
     fig.write_image("images/fig_Intrv1.jpeg")
     #make data frame for just nature of intervention and count how much for every values 
-    df_intv_count = df_t1["Nature d'intervention"].value_counts()
+    df_intv_count = df_t1["Nature d'intervention Code de la nature d'intervention"].value_counts()
 
     #rest index to separate index colomn and make calculation to show every nature of intervention 
     df_intv_count = df_intv_count.reset_index()
@@ -108,16 +108,16 @@ if uploaded_file1 :
     
 
 #----------------case if values of prventif doesn't existe -----------------------------------------------------
-    if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"].empty :
+    if df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["count"].empty :
          #show nbr of correctif interventions
         st.text('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
-        st.text('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
+        st.text('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
 #---------------------------------------------------------------------------------------------------------------------
 
     st.subheader('Suivi des interventions préventives :')
     #make a new datafram for just perventif intervention and name it 
-    df_t1_prv =df_t1[df_t1["Nature d'intervention"]=='PREVENTIF']
+    df_t1_prv =df_t1[df_t1["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']
     
     #calcule every gamme how much have of status for every type of status and name it df_t1_prv2
     df_t1_prv2 =df_t1_prv[["Gamme de maintenance à l'origine de l'intervention",'Etat']].value_counts().reset_index()
@@ -135,8 +135,8 @@ if uploaded_file1 :
     dataFrameSerialization = "legacy"
 
     #creat new column of datetime of debut of intervention and the end of the intervention
-    df_t1["Date de début"] = pd.to_datetime(df_t1["Date de début de l'intervention"])
-    df_t1["Date de fin"] = pd.to_datetime(df_t1["Date de fin de l'intervention"])
+    df_t1["Date de début"] = pd.to_datetime(df_t1["Date/heure de début de l'intervention"])
+    df_t1["Date de fin"] = pd.to_datetime(df_t1["Date/heure de fin de l'intervention"])
 
     #make a format of datetime
     date_format_str = "%d/%m/%Y %H:%M:%S.%f"
@@ -153,15 +153,15 @@ if uploaded_file1 :
     #change the result to hours using this equations
     df_t1["heure"]= df_t1["heure"]/np.timedelta64(1,'h')
     #make new table of two column heure and nature of intervention to regroup each type how much have of time 
-    df_t1_taux = df_t1[["heure", "Nature d'intervention"]]
+    df_t1_taux = df_t1[["heure", "Nature d'intervention Code de la nature d'intervention"]]
     
     #sum each type how much have of hours and make new table to plot it 
-    df_t1_taux = pd.pivot_table(df_t1_taux, index=["Nature d'intervention"],values=['heure'],aggfunc='sum').reset_index()
+    df_t1_taux = pd.pivot_table(df_t1_taux, index=["Nature d'intervention Code de la nature d'intervention"],values=['heure'],aggfunc='sum').reset_index()
     #change the values of hours to int 
     df_t1_taux["heure"] = df_t1_taux["heure"].astype(int)
 
     #plot the table to pie graph to show clearely the result 
-    fig = px.pie(df_t1_taux, names= "Nature d'intervention" ,values='heure' ,color="heure")
+    fig = px.pie(df_t1_taux, names= "Nature d'intervention Code de la nature d'intervention" ,values='heure' ,color="heure")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
 
@@ -182,18 +182,18 @@ if uploaded_file1 :
     
     #-------------if is not any values of correctif --------------------------------------------------------------------------------------
 
-    if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
+    if df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
         st.text('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
     else :
 
-        st.text('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
+        st.text('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
     #------------------------------------------------------------------------------------
     
     st.subheader('La répartition des interventions correctives par priorités :')
 
     #make a new datafram for just correctif intervention and name it 
-    df_t1_cr =df_t1[df_t1["Nature d'intervention"]=='CORRECTIF']
+    df_t1_cr =df_t1[df_t1["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']
 
     #plot the datafram in bar chart of every periority and pourcentage
     fig = px.pie(df_t1_cr, names="Priorité")
@@ -234,29 +234,29 @@ if uploaded_file1 :
     st.text('  * le nombre des interventions du mois est **'+str(df_t2["Code de l'intervention"].count())+'** ')
     st.subheader('La répartition des interventions de maintenance par type :')
     #plot etat of interventions pie chart 
-    fig = px.pie(df_t2, names="Nature d'intervention",color="Nature d'intervention")
+    fig = px.pie(df_t2, names="Nature d'intervention Code de la nature d'intervention",color="Nature d'intervention Code de la nature d'intervention")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
     fig.write_image("images/fig_intrv6.jpeg")
     #make data frame for just nature of intervention and count how much for every values 
-    df_intv_count2 = df_t2["Nature d'intervention"].value_counts()
+    df_intv_count2 = df_t2["Nature d'intervention Code de la nature d'intervention"].value_counts()
 
     #rest index to separate index colomn and make calculation to show every nature of intervention 
     df_intv_count2 = df_intv_count2.reset_index()
     st.header('Suivi de la maintenance préventive ')
 
 #check if is not any values of preventif -------------------------------------------------------------------
-    if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
+    if df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
         st.text('  * le nombre des interventions préventives du mois est **'+str(0)+'** ')
     else :
 
-        st.text('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
+        st.text('  * le nombre des interventions préventives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["count"]))+'** ')
 #-----------------------------------------------------------------------------------------------------------------------------------
 
     st.subheader('Suivi des interventions préventives :')
     #make a new datafram for just perventif intervention and name it 
-    df_t2_prv =df_t2[df_t2["Nature d'intervention"]=='PREVENTIF']
+    df_t2_prv =df_t2[df_t2["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']
     
     #calcule every gamme how much have of status for every type of status and name it df_t1_prv2
     df_t2_prv2 =df_t2_prv[["Gamme de maintenance à l'origine de l'intervention",'Etat']].value_counts().reset_index()
@@ -274,8 +274,8 @@ if uploaded_file1 :
     dataFrameSerialization = "legacy"
 
     #creat new column of datetime of debut of intervention and the end of the intervention
-    df_t2["Date de début"] = pd.to_datetime(df_t2["Date de début de l'intervention"])
-    df_t2["Date de fin"] = pd.to_datetime(df_t2["Date de fin de l'intervention"])
+    df_t2["Date de début"] = pd.to_datetime(df_t2["Date/heure de début de l'intervention"])
+    df_t2["Date de fin"] = pd.to_datetime(df_t2["Date/heure de fin de l'intervention"])
 
     #make a format of datetime
     date_format_str = "%d/%m/%Y %H:%M:%S.%f"
@@ -292,15 +292,15 @@ if uploaded_file1 :
     #change the result to hours using this equations
     df_t2["heure"]= df_t2["heure"]/np.timedelta64(1,'h')
     #make new table of two column heure and nature of intervention to regroup each type how much have of time 
-    df_t1_taux = df_t2[["heure", "Nature d'intervention"]]
+    df_t1_taux = df_t2[["heure", "Nature d'intervention Code de la nature d'intervention"]]
     
     #sum each type how much have of hours and make new table to plot it 
-    df_t1_taux = pd.pivot_table(df_t1_taux, index=["Nature d'intervention"],values=['heure'],aggfunc='sum').reset_index()
+    df_t1_taux = pd.pivot_table(df_t1_taux, index=["Nature d'intervention Code de la nature d'intervention"],values=['heure'],aggfunc='sum').reset_index()
     #change the values of hours to int 
     df_t1_taux["heure"] = df_t1_taux["heure"].astype(int)
 
     #plot the table to pie graph to show clearely the result 
-    fig = px.pie(df_t1_taux, names= "Nature d'intervention" ,values='heure' ,color="heure")
+    fig = px.pie(df_t1_taux, names= "Nature d'intervention Code de la nature d'intervention" ,values='heure' ,color="heure")
     fig.update_traces(hoverinfo='label+percent', textinfo='value+percent')
     st.plotly_chart(fig)
 
@@ -315,19 +315,19 @@ if uploaded_file1 :
  #--------------------case if there isn't any values of correctif ------------------------------------
  
 
-    if df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"].empty :
+    if df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
         st.text('  * le nombre des interventions correctives du mois est **'+str(0)+'** ')
     else :
 
-        st.text('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
+        st.text('  * le nombre des interventions correctives du mois est **'+str(int(df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"]))+'** ')
 #----------------------------------------------------------------------------------------------------
 
     
     st.subheader('La répartition des interventions correctives par priorités :')
 
     #make a new datafram for just correctif intervention and name it 
-    df_t2_cr =df_t2[df_t2["Nature d'intervention"]=='CORRECTIF']
+    df_t2_cr =df_t2[df_t2["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']
 
     #plot the datafram in bar chart of every periority and pourcentage
     fig = px.pie(df_t2_cr, names="Priorité")
@@ -419,11 +419,11 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
         pdf.cell(10)
     #--------------------case if there isn't any values of preventif 
-        if df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["Nature d'intervention"].empty :
+        if df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["Nature d'intervention Code de la nature d'intervention"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='PREVENTIF']["count"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["count"])), 'C')
     #----------------------------------------------------------------------------------------------------
         pdf.ln(0)
         pdf.set_font('Times', 'B', 25)
@@ -451,11 +451,11 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
     #--------------------case if there isn't any values of correctif ------------------------------------
 
-        if df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"].empty :
+        if df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count["Nature d'intervention"]=='CORRECTIF']["count"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count[df_intv_count["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"])), 'C')
     #----------------------------------------------------------------------------------------------------
         footer(pdf)
         pdf.ln(0)
@@ -574,11 +574,11 @@ if uploaded_file1 :
         pdf.cell(10)
     #--------------------case if there isn't any values of preventif ------------------------------------
 
-        if df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"].empty :
+        if df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='PREVENTIF']["count"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='PREVENTIF']["count"])), 'C')
     #------------------------------------------------------------------------------------------------------------
 
         pdf.ln(0)
@@ -608,11 +608,11 @@ if uploaded_file1 :
         pdf.set_font('Times', '', 15)
     #--------------------case if there isn't any values of correctif ------------------------------------
 
-        if df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"].empty :
+        if df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"].empty :
          #show nbr of correctif interventions
             pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(0), 'C')
         else :
-            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2["Nature d'intervention"]=='CORRECTIF']["count"])), 'C')
+            pdf.cell(60, 20, '  * le nombre des interventions préventives du mois est '+str(int(df_intv_count2[df_intv_count2["Nature d'intervention Code de la nature d'intervention"]=='CORRECTIF']["count"])), 'C')
         #------------------------------------------------------------- ------------------------------------
 
         footer(pdf)
